@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}LANGUARD{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <nav>
+      <h1 class="logo">LANGUARD</h1>
+      <ul style="list-style-type: none; padding: 0;">
+        {% if session.get('logged_in') %}
+          <!--role-based links-->
+          {% if session.get('role') == 'USER' %}
+          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.dashboard') }}">Home</a></li>
+          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.alerts') }}">Alerts Table</a></li>
+          {% endif %}
+          <!--link for all roles-->
+          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.profile') }}">Profile</a></li>
+          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.logout') }}">Logout</a></li>
+        {% else %}
+        <!--link for non-users-->
+        <li style="margin: 10px 0;"><a href="{{ url_for('index') }}">Home</a></li>
+        <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.login') }}">Login</a></li> 
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer>
+    <p></p>
+  </footer>
+</body>
+</html>
