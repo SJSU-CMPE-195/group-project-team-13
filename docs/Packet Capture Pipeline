@@ -1,0 +1,15 @@
+Built packet capture script using Python and Scapy to monitor mirrored
+traffic from the switch.
+
+Captured metadata fields include:
+- timestamp
+- source IP
+- destination IP
+- ports
+- protocol
+- packet size
+- TCP flags
+
+Traffic is exported to packets.csv for analysis.
+
+I will attach the capture_to_csv.py
