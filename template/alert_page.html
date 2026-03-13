@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Alerts | LANGUARD{% endblock %}
+
+{% block content %}
+
+<div class="alerts-container">
+
+  <h2>All Alerts</h2>
+
+  <table class="alerts-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Device</th>
+        <th>Severity</th>
+        <th>Status</th>
+        <th>View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for alert in alerts %}
+      <tr>
+        <td>{{ alert.id }}</td>
+        <td>{{ alert.device_name }}</td>
+        <td class="severity {{ alert.severity|lower }}">
+          {{ alert.severity }}
+        </td>
+        <td>{{ alert.status }}</td>
+        <td>
+          <a href="{{ url_for('user_bp.alert_detail', alert_id = alert.id) }}" class="view-btn">
+            Details
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}
