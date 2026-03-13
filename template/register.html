@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Register | LANGUARD{% endblock %}
+{% block content %}
+<div class="login-container" style="text-align:center; margin:auto; max-width: 500px;">
+  <h2>Create a New Account</h2>
+  <form method="post" action="{{url_for('user_bp.register')}}">
+    <div>
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required style="width:100%; padding:8px;" />
+    </div>
+    <div>
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required style="width:100%; padding:8px;" />
+    </div>
+    <div>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required style="width:100%; padding:8px;" />
+    </div>
+    <div>
+      <label for="confirm_password">Confirm Password:</label><br>
+      <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required style="width:100%; padding:8px;" />
+    </div>
+    <button type="submit">Register</button>
+  </form>
+  <p class="register-link">
+    Already have an account? 
+    <a href="{{url_for('user_bp.login')}}">Login here</a>
+  </p>
+</div>
+{% endblock %}
