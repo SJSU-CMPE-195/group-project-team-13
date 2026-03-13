@@ -18,5 +18,10 @@ interface 2 monitor
 
 
 
+   Port roles:
+Port 1 – Victim machine
+Port 2 – Attacker machine
+Port 8 – Raspberry Pi IDS sensor
+   
 
 
