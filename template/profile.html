@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Profile | LANGUARD{% endblock %}
+{% block content %}
+<h1><span class="goback" onclick="window.history.back()">←</span> Profile</h1>
+<div class="profile">
+  <div>
+    <p class="title">ID</p>
+    <p class="subtitle">{{user.user_id}}</p>
+  </div>
+  <div>
+    <p class="title">Email/Username</p>
+    <p class="subtitle">{{user.email}}</p>
+  </div>
+  <div>
+    <p class="title">Name</p>
+    <p class="subtitle">{{user.name}}</p>
+  </div>
+  <div>
+    <p class="title">Role</p>
+    <p class="subtitle">{{user.role}}</p>
+  </div>
+ 
+</div>
+{% endblock %}

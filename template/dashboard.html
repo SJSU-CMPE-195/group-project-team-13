@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard">
+
+    <!-- Welcome Section -->
+    <section class="dashboard-header">
+      <h2>Security Dashboard</h2>
+      <p>Welcome, {{ session.get('name') }}</p>
+    </section>
+  
+    <!-- Stats Section -->
+    <section class="dashboard-stats">
+  
+      <div class="stat-card">
+        <h3>Threats Blocked</h3>
+        <p class="stat-number">{{ threats_blocked or 0 }}</p>
+      </div>
+  
+      <div class="stat-card">
+        <h3>Active Alerts</h3>
+        <p class="stat-number alert">{{ alert_count or 0 }}</p>
+      </div>
+  
+      <div class="stat-card">
+        <h3>Packets Captured</h3>
+        <p class="stat-number">{{ packet_count or 0 }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Total Alerts</h3>
+        <p class="stat-number">{{ total_alerts or 0 }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>High severity Alerts</h3>
+        <p class="stat-number">{{ high_alerts or 0 }}</p>
+      </div>
+  
+    </section>
+  
+    <!-- Alerts Section -->
+    <section class="dashboard-section">
+      <h3>Recent Alerts</h3>
+  
+      {% if alerts %}
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>Alert Type</th>
+            <th>Severity</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alert in alerts %}
+          <tr>
+            <td>{{ alert.device_name }}</td>
+            <td>{{ alert.alert_type }}</td>
+            <td>{{ alert.severity }}</td>
+            <td>{{ alert.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p>No alerts detected.</p>
+      {% endif %}
+    </section>
+  
+    <!-- Activity Log -->
+    <section class="dashboard-section">
+      <h3>Recent Activity</h3>
+  
+      {% if activity_logs %}
+        <ul class="activity-log">
+          {% for log in activity_logs %}
+            <li>{{ log.timestamp }} — {{ log.description }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No recent activity.</p>
+      {% endif %}
+    </section>
+  
+    
+  
+  </div>
+{% endblock %}
