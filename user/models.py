@@ -87,8 +87,8 @@ class Metadata(db.Model):
     #length = db.Column(db.Integer, nullable = False)
 
     #relationships to link metadata to devices
-    src_device = db.relationship('Devices', foreign_keys = [src_id], backref='sent_packets')      
-    dst_device = db.relationship('Devices', foreign_keys = [dst_id], backref='received_packets')
+    src_device = db.relationship('Devices', foreign_keys = [src_mac_id], backref='sent_packets')      
+    dst_device = db.relationship('Devices', foreign_keys = [dst_mac_id], backref='received_packets')
     
 
 class Alerts(db.Model):   
@@ -105,6 +105,6 @@ class Alerts(db.Model):
 
 
     #relationship to link alert to packet metadata
-    packet = db.relationship('Metadata', foreign_keys = [packet_id], backref='alerts')  
+    flow = db.relationship('Metadata', foreign_keys = [flow_id], backref='alerts')  
     #relationship to link alert to user (if assigned)
     #assigned_user = db.relationship('Users', backref='assigned_alerts') 
