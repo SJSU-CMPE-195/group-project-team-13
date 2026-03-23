@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from db import db   #import the SQLAlchemy instance from db.py
 from user.models import Users, Devices, Metadata, Alerts   #import models to create tables
 from user.routes import user_bp   #import user blueprint for routes
+from seed import seed_data   #import seed function to add sample data to the database for prototype purposes
 from dotenv import load_dotenv      #load environment variables from .env file
 import os           #access environment variables
 
@@ -15,6 +16,7 @@ app.register_blueprint(user_bp)        #register user blueprint
 db.init_app(app)   #initialize SQLAlchemy instance with app
 with app.app_context():
     db.create_all()
+    seed_data()    #seed the database with sample data for prototype
     print('Created database!')
 
 #define routes for different pages
