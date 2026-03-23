@@ -13,6 +13,11 @@ With the growing popularity of cybercrime, many homes and businesses are affecte
 
  ---
 
+## Demo
+
+[Link to demo video or GIF]
+
+---
 ## Getting Started
 
 ### Prerequisites
@@ -31,6 +36,7 @@ With the growing popularity of cybercrime, many homes and businesses are affecte
 
 ### Installation
 (Step by step instructions to set the project locally)
+
 run the scripts locally. 
 
 ```bash
@@ -53,8 +59,9 @@ pip install -r requirements.txt
 
 ### Configuration
 (How to configure environment variables, API keys, etc)
-Create a .env file in the root directory of the project and add the following:
 
+Create a .env file in the root directory of the project and add the following:
+       
         ```bash
         FLASK_ENV=development       #set the environment to development  
         DATABASE=your_database_url      #database url for sqlite

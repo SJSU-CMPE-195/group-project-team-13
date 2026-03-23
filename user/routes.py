@@ -64,11 +64,27 @@ def register():
         return redirect(url_for('user_bp.login'))       #redirect to login page after successful registration
     return render_template('register.html')    
 
+
 @user_bp.route('/logout')
 def logout():
     session.clear()     #clear all session data to log out
     flash("Logged out successfully. See you soon.", "success")
     return redirect(url_for('user_bp.login'))      
+
+
+@user_bp.route('/profile')
+def profile():
+    if not session.get('logged_in'):
+        flash("Must log in to access this page", "error")
+        return redirect(url_for('user_bp.login'))
+    
+    #fetch user info from session
+    user_info = {'user_id': session.get('user_id'), 'name': session.get('name'),
+                'email': session.get('email'),'role': session.get('role')
+    }
+    print(f"Load profile for user: {user_info['email']}, role: {user_info['role']}")
+    return render_template('profile.html', user = user_info)
+
 
 @user_bp.route('/dashboard')
 def dashboard():
@@ -76,6 +92,7 @@ def dashboard():
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
     return render_template('dashboard.html')
+
 
 @user_bp.route('/alerts')
 def alerts():
@@ -87,6 +104,7 @@ def alerts():
     #alerts = Alerts.query.order_by(Alerts.timestamp.desc()).all()
     #return render_template('alerts.html', alerts=alerts)
     return render_template('alert_page.html')
+
 
 @user_bp.route('/alerts/details')
 def alert_details(alert_id):
@@ -103,18 +121,6 @@ def alert_details(alert_id):
     
     return render_template('alert_details.html')#, alert=alert, metadata=metadata)
 
-@user_bp.route('/profile')
-def profile():
-    if not session.get('logged_in'):
-        flash("Must log in to access this page", "error")
-        return redirect(url_for('user_bp.login'))
-    
-    #fetch user info from session
-    user_info = {'user_id': session.get('user_id'), 'name': session.get('name'),
-                'email': session.get('email'),'role': session.get('role')
-    }
-    print(f"Load profile for user: {user_info['email']}, role: {user_info['role']}")
-    return render_template('profile.html', user = user_info)
 
 @user_bp.route('/add_alert', methods=['POST'])
 def add_alert():
