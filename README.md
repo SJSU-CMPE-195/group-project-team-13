@@ -48,7 +48,7 @@ cd group-project-team-13
 
 # Set up environment variables
 python3 -m venv .venv
-source .venv/bin/activate  # Linux/macOS
+source venv/bin/activate  # Linux/macOS
 .venv\Scripts\activate  # Windows
 
 
@@ -62,11 +62,11 @@ pip install -r requirements.txt
 
 Create a .env file in the root directory of the project and add the following:
        
-        ```
+        
         FLASK_ENV=development       #set the environment to development  
         DATABASE=your_database_url      #database url for sqlite
         SECRET_KEY=your_secret_key      #for session management
-        ```
+        
 
 ### Running the Application
 (Commands to start the application)
