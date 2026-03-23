@@ -103,11 +103,11 @@ def alerts():
     #fetch alerts from database, order by most recent first
     alerts = Alerts.query.order_by(Alerts.timestamp.desc()).all()
     #return render_template('alerts.html', alerts=alerts)
-    return render_template('alert_page.html')
+    return render_template('alert_page.html', alerts=alerts)
 
 
 @user_bp.route('/alerts/<int:alert_id>')
-def alert_details(alert_id):
+def alert_detail(alert_id):
     if not session.get('logged_in'):
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
@@ -119,7 +119,7 @@ def alert_details(alert_id):
     
     #metadata = Metadata.query.get(alert.packet_id)     #fetch associated metadata
     
-    return render_template('alert_details.html')#, alert=alert, metadata=metadata)
+    return render_template('alert_detail.html', alert=alert,)# metadata=metadata)
 
 
 @user_bp.route('/add_alert', methods=['POST'])

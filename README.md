@@ -17,6 +17,14 @@ With the growing popularity of cybercrime, many homes and businesses are affecte
 
 [Link to demo video or GIF]
 
+
+- Prototype login credentials with seeding data 
+
+```
+Email: test@gmail.com
+Password: password_000
+```
+
 ---
 ## Getting Started
 

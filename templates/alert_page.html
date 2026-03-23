@@ -7,6 +7,7 @@
 
   <h2>All Alerts</h2>
 
+  {% if alerts %}
   <table class="alerts-table">
     <thead>
       <tr>
@@ -20,14 +21,20 @@
     <tbody>
       {% for alert in alerts %}
       <tr>
-        <td>{{ alert.id }}</td>
-        <td>{{ alert.device_name }}</td>
+        <td>{{ alert.alert_id }}</td>
+        <td>
+          {% if alert.flow_alert.packets %}
+            {{ alert.flow_alert.packets[0].src_device.device_name }}
+          {% else %}
+            N/A
+          {% endif %}
+        </td>
         <td class="severity {{ alert.severity|lower }}">
           {{ alert.severity }}
         </td>
         <td>{{ alert.status }}</td>
         <td>
-          <a href="{{ url_for('user_bp.alert_detail', alert_id = alert.id) }}" class="view-btn">
+          <a href="{{ url_for('user_bp.alert_detail', alert_id = alert.alert_id) }}" class="view-btn">
             Details
           </a>
         </td>
@@ -35,7 +42,9 @@
       {% endfor %}
     </tbody>
   </table>
-
+  {% else %}
+    <p>No alerts found.</p>
+  {% endif %}
 </div>
 
 {% endblock %}
