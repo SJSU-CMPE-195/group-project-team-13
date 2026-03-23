@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 Create a .env file in the root directory of the project and add the following:
        
-        ```bash
+        ```
         FLASK_ENV=development       #set the environment to development  
         DATABASE=your_database_url      #database url for sqlite
         SECRET_KEY=your_secret_key      #for session management
