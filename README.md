@@ -7,7 +7,7 @@ With the growing popularity of cybercrime, many homes and businesses are affecte
  - Isaiah Villanueva (Villanuevai1)
  - Fernando Ruiz (fernandoruiz02)
  - Hoang Nhat Ho (supernova0216)
- - Anthony Truong
+ - Anthony Truong (tonyspaghetti)
 
  **Advisor:** Professor Bhawandeep Singh Harsh
 
