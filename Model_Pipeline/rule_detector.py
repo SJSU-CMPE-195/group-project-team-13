@@ -26,10 +26,6 @@ class RuleDetector:
         print(f"!!! [RULE ALERT] {severity}: {name}")
 
     def evaluate(self, feature_row):
-        """
-        this takes one row of features (basically one 15-second snapshot of traffic)
-        and checks it against a few simple rules to see if anything looks weird
-        """
 
         # rule 1: too many destination ports → probably port scanning
         if feature_row['unique_dst_ports'] > 20:
