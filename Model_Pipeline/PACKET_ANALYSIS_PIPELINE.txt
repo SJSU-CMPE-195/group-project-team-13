@@ -1,0 +1,23 @@
+Network Traffic Analyzer:
+This project watches network traffic and tries to detect attacks using rules + AI.
+
+How it works:
+capture_to_csv.py → extract_features.py  
+extract_features.py → rule_detector.py  
+extract_features.py → ai_detector.py  
+main_monitor.py → runs everything
+
+What each file does:
+capture_to_csv.py
+  captures packets → saves to local_packets.csv
+extract_features.py
+  turns packets into features (counts, IPs, ports, etc.)
+rule_detector.py
+  uses simple rules (port scan, UDP flood, etc.)
+  prints alerts
+ai_detector.py
+  uses ML model to detect anomalies
+  gives a score
+main_monitor.py
+  runs everything
+  prints results + sends data to database
