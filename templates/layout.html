@@ -14,7 +14,7 @@
         {% if session.get('logged_in') %}
           <!--role-based links-->
           {% if session.get('role') == 'USER' %}
-          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.dashboard') }}">Home</a></li>
+          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.dashboard') }}">Dashboard</a></li>
           <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.alerts') }}">Alerts Table</a></li>
           {% endif %}
           <!--link for all roles-->

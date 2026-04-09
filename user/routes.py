@@ -103,7 +103,7 @@ def alerts():
     #fetch alerts from database, order by most recent first
     alerts = Alerts.query.order_by(Alerts.timestamp.desc()).all()
     #return render_template('alerts.html', alerts=alerts)
-    return render_template('alert_page.html', alerts=alerts)
+    return render_template('alert_page.html', alerts = alerts)
 
 
 @user_bp.route('/alerts/<int:alert_id>')
@@ -119,7 +119,7 @@ def alert_detail(alert_id):
     
     #metadata = Metadata.query.get(alert.packet_id)     #fetch associated metadata
     
-    return render_template('alert_detail.html', alert=alert,)# metadata=metadata)
+    return render_template('alert_detail.html', alert = alert,)
 
 
 @user_bp.route('/add_alert', methods=['POST'])
@@ -129,3 +129,22 @@ def add_alert():
         return redirect(url_for('user_bp.login'))
     
     packet_id = request.form['packet_id']
+
+
+
+
+@user_bp.route('/alerts/<int:alert_id>/resolve', methods=['POST'])
+def resolve_alert(alert_id):
+    if not session.get('logged_in'):
+        flash("Must log in to access this page", "error")
+        return redirect(url_for('user_bp.login'))
+    
+    alert = Alerts.query.get(alert_id)     #fetch alert by ID
+    if not alert:
+        flash("Alert not found", "error")
+        return redirect(url_for('user_bp.alerts'))
+    
+    alert.status = "RESOLVED"     #update alert status to resolved
+    db.session.commit()        #save changes to database
+    flash("Alert marked as resolved", "success")
+    return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))

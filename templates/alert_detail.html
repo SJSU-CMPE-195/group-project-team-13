@@ -11,7 +11,7 @@
 
     <div class="detail-item">
       <span class="label">Device:</span>
-      <span>{{ alert.device_name }}</span>
+      <span>{{ alert.flow_alert.packets[0].src_device.device_name }}</span>
     </div>
 
     <div class="detail-item">
@@ -32,7 +32,7 @@
     </div>
 
     {% if alert.status != "Resolved" %}
-    <form method="post" action="{{ url_for('user_bp.resolve_alert', alert_id = alert.id) }}">
+    <form method="post" action="{{ url_for('user_bp.resolve_alert', alert_id=alert.alert_id) }}">
       <button type="submit" class="resolve-btn">
         Mark Resolved
       </button>
