@@ -10,20 +10,91 @@
   <div class="detail-box">
 
     <div class="detail-item">
-      <span class="label">Device:</span>
-      <span>{{ alert.flow_alert.packets[0].src_device.device_name }}</span>
+      <span class="label">Source Device:</span>
+      <span>{{ alert.flow_alert.packets[0].src_device.device_name }}
+        ({{ alert.flow_alert.src_ip}})
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Destination Device:</span>
+      <span>{{ alert.flow_alert.packets[0].dst_device.device_name }}
+        ({{ alert.flow_alert.dst_ip}})
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">MAC:</span>
+      <span> {{ alert.flow_alert.packets[0].src_device.mac_addr }} 
+        to {{ alert.flow_alert.packets[0].dst_device.mac_addr }}
+      </span>
     </div>
 
     <div class="detail-item">
       <span class="label">Severity:</span>
       <span class="severity {{ alert.severity|lower }}">
-        {{ alert.severity }}
+        {{ alert.severity }} ({{ alert.score }})
       </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Anomaly:</span>
+      <span>{{ "YES" if alert.is_anomaly else "NO" }}</span>
     </div>
 
     <div class="detail-item">
       <span class="label">Description:</span>
       <p>{{ alert.description }}</p>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Protocol:</span>
+      <span>{{ alert.flow_alert.protocol }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Ports:</span>
+      <span> From port {{ alert.flow_alert.src_port }} to port {{ alert.flow_alert.dst_port }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Total Packets:</span>
+      <span>{{ alert.flow_alert.total_packets }}</span>
+    </div>
+    
+    <div class="detail-item">
+      <span class="label">Total Bytes:</span>
+      <span>{{ alert.flow_alert.total_bytes }}</span>
+    </div>
+    
+    <div class="detail-item">
+      <span class="label">Duration:</span>
+      <span> {{ alert.flow_alert.start_time }} to {{ alert.flow_alert.end_time }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Bytes/sec:</span>
+      <span>{{ alert.flow_alert.flow_bytes_per_sec }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">SYN Count:</span>
+      <span>{{ alert.flow_alert.syn_count }}</span>
+    </div>
+    
+    <div class="detail-item">
+      <span class="label">ACK Count:</span>
+      <span>{{ alert.flow_alert.ack_count }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Packet/Port Ratio:</span>
+      <span>{{ alert.flow_alert.packet_to_port_ratio }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="label">Payload Ratio:</span>
+      <span>{{ alert.flow_alert.payload_ratio }}</span>
     </div>
 
     <div class="detail-item">

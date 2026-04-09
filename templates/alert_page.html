@@ -12,7 +12,7 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Device</th>
+        <th>Date Time</th>
         <th>Severity</th>
         <th>Status</th>
         <th>View</th>
@@ -22,13 +22,7 @@
       {% for alert in alerts %}
       <tr>
         <td>{{ alert.alert_id }}</td>
-        <td>
-          {% if alert.flow_alert.packets %}
-            {{ alert.flow_alert.packets[0].src_device.device_name }}
-          {% else %}
-            N/A
-          {% endif %}
-        </td>
+        <td>{{ alert.timestamp }}</td>
         <td class="severity {{ alert.severity|lower }}">
           {{ alert.severity }}
         </td>
