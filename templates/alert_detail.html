@@ -31,6 +31,8 @@
       <span>{{ alert.status }}</span>
     </div>
 
+    <button class="back-btn" onclick="window.history.back()"> Back
+
     {% if alert.status != "Resolved" %}
     <form method="post" action="{{ url_for('user_bp.resolve_alert', alert_id=alert.alert_id) }}">
       <button type="submit" class="resolve-btn">

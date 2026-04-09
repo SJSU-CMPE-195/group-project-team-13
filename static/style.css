@@ -320,3 +320,17 @@ h2 {
 .resolve-btn:hover {
     background-color: #1e8449;
 }
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+  
+.back-btn:hover {
+    background-color: #0056b3;
+}

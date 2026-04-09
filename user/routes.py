@@ -144,6 +144,10 @@ def resolve_alert(alert_id):
         flash("Alert not found", "error")
         return redirect(url_for('user_bp.alerts'))
     
+    if alert.status == "RESOLVED":
+        flash("Alert is already resolved", "info")
+        return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
+    
     alert.status = "RESOLVED"     #update alert status to resolved
     db.session.commit()        #save changes to database
     flash("Alert marked as resolved", "success")
