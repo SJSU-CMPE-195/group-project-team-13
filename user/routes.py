@@ -91,7 +91,15 @@ def dashboard():
     if not session.get('logged_in'):        #check if user is logged in
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
-    return render_template('dashboard.html')
+    
+    threats_blocked = Alerts.query.filter_by(status = "RESOLVED").count()     #count number of resolved alerts
+    alert_count = Alerts.query.filter_by(status = "OPEN").count()     #total number of alerts 
+    packet_count = Metadata.query.count()     #total number of packets from database
+    total_alerts = Alerts.query.count()     #total number of alerts
+    high_alerts = Alerts.query.filter_by(severity = "HIGH").count()     #count high severity alerts                                      
+
+    return render_template('dashboard.html', packet_count = packet_count, alert_count = alert_count, threats_blocked = threats_blocked,
+                            total_alerts = total_alerts, high_alerts = high_alerts)
 
 
 @user_bp.route('/alerts')
