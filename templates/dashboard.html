@@ -2,92 +2,103 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <script>
-  setInterval(function () { location.reload(); }, 10000);
-  </script>
+  setInterval(function() { location.reload(); }, 10000);
+</script>
+
+{% set friendly = {
+  'Potential Port Scan': 'Someone is scanning your network for open doors',
+  'SYN Flood Detected': 'Your network is being flooded with fake connection requests',
+  'UDP Flooding': 'Your network is being overwhelmed with data',
+  'Network Sweep/Discovery': 'Someone is mapping all devices on your network',
+  'Large Packet Volume': 'Unusually large amounts of data are being sent',
+  'High Traffic Volume Burst': 'A sudden spike in network traffic was detected',
+  'ICMP Flood (Ping Flood)': 'Your network is being bombarded with ping requests',
+  'ARP Spoofing Detected': 'Someone may be intercepting your network traffic',
+  'SSH Brute Force Attack': 'Someone is trying to break into your device by guessing passwords',
+  'Suspicious DNS Activity': 'Unusual internet lookup activity detected — possible DNS attack',
+  'Slowloris / HTTP Flood': 'Someone is trying to overwhelm your web server',
+  'Anomaly': 'Unusual network behavior detected by AI'
+} %}
+
 <div class="dashboard">
 
-    <!-- Welcome Section -->
-    <section class="dashboard-header">
-      <h2>Security Dashboard</h2>
-      <p>Welcome, {{ session.get('name') }}</p>
-    </section>
-  
-    <!-- Stats Section -->
-    <section class="dashboard-stats">
-  
-      <div class="stat-card">
-        <h3>Threats Blocked</h3>
-        <p class="stat-number">{{ threats_blocked or 0 }}</p>
-      </div>
-  
-      <div class="stat-card">
-        <h3>Active Alerts</h3>
-        <p class="stat-number alert">{{ alert_count or 0 }}</p>
-      </div>
-  
-      <div class="stat-card">
-        <h3>Packets Captured</h3>
-        <p class="stat-number">{{ packet_count or 0 }}</p>
-      </div>
-
-      <div class="stat-card">
-        <h3>Total Alerts</h3>
-        <p class="stat-number">{{ total_alerts or 0 }}</p>
-      </div>
-
-      <div class="stat-card">
-        <h3>High severity Alerts</h3>
-        <p class="stat-number">{{ high_alerts or 0 }}</p>
-      </div>
-  
-    </section>
-  
-    <!-- Alerts Section -->
-    <section class="dashboard-section">
-      <h3>Recent Alerts</h3>
-  
-      {% if alerts %}
-      <table class="user-table">
-        <thead>
-          <tr>
-            <th>Device</th>
-            <th>Alert Type</th>
-            <th>Severity</th>
-            <th>Timestamp</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for alert in alerts %}
-          <tr>
-            <td>{{ alert.device_name }}</td>
-            <td>{{ alert.alert_type }}</td>
-            <td>{{ alert.severity }}</td>
-            <td>{{ alert.timestamp }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% else %}
-        <p>No alerts detected.</p>
-      {% endif %}
-    </section>
-  
-    <!-- Activity Log -->
-    <section class="dashboard-section">
-      <h3>Recent Activity</h3>
-  
-      {% if activity_logs %}
-        <ul class="activity-log">
-          {% for log in activity_logs %}
-            <li>{{ log.timestamp }} — {{ log.description }}</li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>No recent activity.</p>
-      {% endif %}
-    </section>
-  
-    
-  
+  <!-- Quick network status banner. -->
+  {% if alert_count > 0 %}
+  <div class="status-banner status-danger">
+    <span class="status-icon">Threat</span>
+    <div>
+      <h2>Threat Detected!</h2>
+      <p>Your network has {{ alert_count }} active threat{{ 's' if alert_count > 1 else '' }}. Review the alerts below.</p>
+    </div>
   </div>
+  {% else %}
+  <div class="status-banner status-safe">
+    <span class="status-icon">Safe</span>
+    <div>
+      <h2>Your Network is Safe</h2>
+      <p>No active threats detected. Everything looks normal.</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Summary stats. -->
+  <section class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon">Resolved</div>
+      <h3>Threats Resolved</h3>
+      <p class="stat-number">{{ threats_blocked or 0 }}</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">Active</div>
+      <h3>Active Threats</h3>
+      <p class="stat-number {% if alert_count > 0 %}alert{% endif %}">{{ alert_count or 0 }}</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">Packets</div>
+      <h3>Packets Monitored</h3>
+      <p class="stat-number">{{ packet_count or 0 }}</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">High</div>
+      <h3>High Severity</h3>
+      <p class="stat-number {% if high_alerts > 0 %}alert{% endif %}">{{ high_alerts or 0 }}</p>
+    </div>
+  </section>
+
+  <!-- Recent alerts. -->
+  <section class="dashboard-section">
+    <h3>Recent Alerts</h3>
+
+    {% if alerts %}
+    <div class="alert-cards">
+      {% for alert in alerts %}
+      {% if alert.status != 'RESOLVED' %}
+      <div class="alert-card alert-card-{{ alert.severity | lower }}">
+        <div class="alert-card-header">
+          <span class="alert-severity-icon">{{ alert.severity or 'Low' }}</span>
+          <div class="alert-card-title">
+            <strong>{{ alert.alert_name or 'Unknown Alert' }}</strong>
+            <span class="alert-card-time">{{ alert.timestamp.strftime('%b %d at %I:%M %p') if alert.timestamp else '' }}</span>
+          </div>
+        </div>
+        <p class="alert-card-desc">{{ friendly.get(alert.alert_name, alert.description or 'Suspicious activity detected') }}</p>
+        {% if 'from' in (alert.description or '') %}
+        <p class="alert-card-source">Source: {{ alert.description.split('from ')[-1].split(' (')[0] }}</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('user_bp.resolve_alert', alert_id=alert.alert_id) }}">
+          <button type="submit" class="btn-dismiss">Mark as Resolved</button>
+        </form>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="no-alerts-box">
+      <p class="no-alerts">No alerts right now. Your network looks clean.</p>
+    </div>
+    {% endif %}
+  </section>
+
+</div>
 {% endblock %}

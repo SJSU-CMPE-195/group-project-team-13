@@ -1,100 +1,40 @@
 {% extends "layout.html" %}
 {% block title %}Alert Detail | LANGUARD{% endblock %}
-
 {% block content %}
+
+{% set friendly = {
+  'Potential Port Scan': 'Someone is scanning your network for open doors',
+  'SYN Flood Detected': 'Your network is being flooded with fake connection requests',
+  'UDP Flooding': 'Your network is being overwhelmed with data',
+  'Network Sweep/Discovery': 'Someone is mapping all devices on your network',
+  'Large Packet Volume': 'Unusually large amounts of data are being sent',
+  'High Traffic Volume Burst': 'A sudden spike in network traffic was detected',
+  'ICMP Flood (Ping Flood)': 'Your network is being bombarded with ping requests',
+  'ARP Spoofing Detected': 'Someone may be intercepting your network traffic',
+  'SSH Brute Force Attack': 'Someone is trying to break into your device by guessing passwords',
+  'Suspicious DNS Activity': 'Unusual internet lookup activity detected — possible DNS attack',
+  'Slowloris / HTTP Flood': 'Someone is trying to overwhelm your web server',
+  'Anomaly': 'Unusual network behavior detected by AI'
+} %}
 
 <div class="alert-detail">
 
   <h2>Alert Details</h2>
 
+  <!-- Alert severity banner. -->
+  <div class="status-banner detail-banner {% if alert.severity == 'High' %}status-danger{% elif alert.severity == 'Medium' %}status-warning{% else %}status-info{% endif %}">
+    <span class="status-icon">{{ alert.severity or 'Low' }}</span>
+    <div>
+      <h2>{{ alert.alert_name or 'Alert' }}</h2>
+      <p>{{ friendly.get(alert.alert_name, alert.description or 'Suspicious activity detected') }}</p>
+    </div>
+  </div>
+
   <div class="detail-box">
 
     <div class="detail-item">
-      <span class="label">Source Device:</span>
-      <span>{{ alert.flow_alert.packets[0].src_device.device_name }}
-        ({{ alert.flow_alert.src_ip}})
-      </span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Destination Device:</span>
-      <span>{{ alert.flow_alert.packets[0].dst_device.device_name }}
-        ({{ alert.flow_alert.dst_ip}})
-      </span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">MAC:</span>
-      <span> {{ alert.flow_alert.packets[0].src_device.mac_addr }} 
-        to {{ alert.flow_alert.packets[0].dst_device.mac_addr }}
-      </span>
-    </div>
-
-    <div class="detail-item">
       <span class="label">Severity:</span>
-      <span class="severity {{ alert.severity|lower }}">
-        {{ alert.severity }} ({{ alert.score }})
-      </span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Anomaly:</span>
-      <span>{{ "YES" if alert.is_anomaly else "NO" }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Description:</span>
-      <p>{{ alert.description }}</p>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Protocol:</span>
-      <span>{{ alert.flow_alert.protocol }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Ports:</span>
-      <span> From port {{ alert.flow_alert.src_port }} to port {{ alert.flow_alert.dst_port }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Total Packets:</span>
-      <span>{{ alert.flow_alert.total_packets }}</span>
-    </div>
-    
-    <div class="detail-item">
-      <span class="label">Total Bytes:</span>
-      <span>{{ alert.flow_alert.total_bytes }}</span>
-    </div>
-    
-    <div class="detail-item">
-      <span class="label">Duration:</span>
-      <span> {{ alert.flow_alert.start_time }} to {{ alert.flow_alert.end_time }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Bytes/sec:</span>
-      <span>{{ alert.flow_alert.flow_bytes_per_sec }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">SYN Count:</span>
-      <span>{{ alert.flow_alert.syn_count }}</span>
-    </div>
-    
-    <div class="detail-item">
-      <span class="label">ACK Count:</span>
-      <span>{{ alert.flow_alert.ack_count }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Packet/Port Ratio:</span>
-      <span>{{ alert.flow_alert.packet_to_port_ratio }}</span>
-    </div>
-
-    <div class="detail-item">
-      <span class="label">Payload Ratio:</span>
-      <span>{{ alert.flow_alert.payload_ratio }}</span>
+      <span class="severity {{ alert.severity | lower }}">{{ alert.severity }}</span>
     </div>
 
     <div class="detail-item">
@@ -102,16 +42,79 @@
       <span>{{ alert.status }}</span>
     </div>
 
-    <button class="back-btn" onclick="window.history.back()"> Back
+    <div class="detail-item">
+      <span class="label">Detection Type:</span>
+      <span>{{ alert.detection_type or 'N/A' }}</span>
+    </div>
 
-    {% if alert.status != "Resolved" %}
-    <form method="post" action="{{ url_for('user_bp.resolve_alert', alert_id=alert.alert_id) }}">
-      <button type="submit" class="resolve-btn">
-        Mark Resolved
-      </button>
-    </form>
+    <div class="detail-item">
+      <span class="label">Time Detected:</span>
+      <span>{{ alert.timestamp.strftime('%B %d, %Y at %I:%M %p') if alert.timestamp else 'N/A' }}</span>
+    </div>
+
+    {% if alert.description and 'from' in alert.description %}
+    <div class="detail-item">
+      <span class="label">Source IP:</span>
+      <span class="alert-source">{{ alert.description.split('from ')[-1].split(' (')[0] }}</span>
+    </div>
+    {% elif alert.flow_alert %}
+    <div class="detail-item">
+      <span class="label">Source:</span>
+      <span>{{ alert.flow_alert.src_ip }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Destination:</span>
+      <span>{{ alert.flow_alert.dst_ip }}</span>
+    </div>
     {% endif %}
 
+    <div class="detail-item">
+      <span class="label">Packets Captured:</span>
+      <span>{{ alert.packet_count if alert.packet_count is not none else (alert.flow_alert.total_packets if alert.flow_alert else 'N/A') }}</span>
+    </div>
+
+    {% if alert.window_start %}
+    <div class="detail-item">
+      <span class="label">Detection Window:</span>
+      <span>{{ alert.window_start }}</span>
+    </div>
+    {% endif %}
+
+    {% if alert.anomaly_score is not none %}
+    <div class="detail-item">
+      <span class="label">AI Anomaly Score:</span>
+      <span>{{ "%.4f" | format(alert.anomaly_score) }}</span>
+    </div>
+    {% endif %}
+
+    {% if alert.flow_alert %}
+    <div class="detail-item">
+      <span class="label">Protocol:</span>
+      <span>{{ alert.flow_alert.protocol }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Ports:</span>
+      <span>{{ alert.flow_alert.src_port }} → {{ alert.flow_alert.dst_port }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Total Bytes:</span>
+      <span>{{ alert.flow_alert.total_bytes }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Duration:</span>
+      <span>{{ alert.flow_alert.start_time }} to {{ alert.flow_alert.end_time }}</span>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div class="detail-actions">
+    <button type="button" class="back-btn" onclick="window.history.back()">Back</button>
+    {% if alert.status != 'RESOLVED' %}
+    <form method="POST" action="{{ url_for('user_bp.resolve_alert', alert_id=alert.alert_id) }}">
+      <button type="submit" class="btn-dismiss">Mark as Resolved</button>
+    </form>
+    {% endif %}
   </div>
 
 </div>
