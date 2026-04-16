@@ -7,3 +7,16 @@ numpy
 scikit-learn
 joblib
 scapy
+argon2-cffi==25.1.0
+argon2-cffi-bindings==25.1.0
+blinker==1.9.0
+cffi==2.0.0
+click==8.3.1
+SQLAlchemy==2.0.47
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+pycparser==3.0
+SQLAlchemy==2.0.47
+typing_extensions==4.15.0
+Werkzeug==3.1.6

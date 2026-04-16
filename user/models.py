@@ -1,33 +1,41 @@
-from db import db  # Shared database connection.
-from sqlalchemy import func  # Used for server-side timestamps.
-from werkzeug.security import generate_password_hash, check_password_hash
+from db import db   #import database connection
+from sqlalchemy import func   #import func for now()
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError   #for password verification failure
 import os
 
-class Users(db.Model):  # User account model.
-    __tablename__ = 'users'
-    user_id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(100), unique=True, nullable = False)
+ph = PasswordHasher()   #create an instance of PasswordHasher
+
+class Users(db.Model):   #define User model inheriting from db.Model
+    __tablename__ = 'users'   #specify table name for SQLAlchemy
+    user_id = db.Column(db.Integer, primary_key = True)     
+    email = db.Column(db.String(100), unique=True, nullable = False) 
     hashed_password = db.Column(db.String(300), nullable = False)
     name = db.Column(db.String(100), nullable = False)
     role = db.Column(db.String(20), nullable = False, default = "USER")  # ADMIN or USER.
 
-    # Hash and store the password.
-    def set_password(self, password):
-        self.hashed_password = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.hashed_password, password)
+    #hash and set the password
+    def set_password(self, password):     
+        self.hashed_password = ph.hash(password)
+    
+    def verify_password(self, password):  
+        try:
+            return ph.verify(self.hashed_password, password)   #verify the password 
+            #print("Password verification successful")   #verification successful
+        except VerifyMismatchError:
+            #print("Invalid password")   #verification failed
+            return False
 
     def assign_admin(self):
         if self.email == os.getenv("ADMIN_EMAIL"):
             self.role = "ADMIN"
 
     @staticmethod
-    def find_by_email(email):  # Look up a user by email.
+    def find_by_email(email):     #find user by email
         if not email:
             return None
-        return Users.query.filter_by(email=email).first()
-    
+        return Users.query.filter_by(email=email).first()   #query the database for a user with the given email
+        
 
 class Devices(db.Model):   
     __tablename__ = 'devices'
@@ -76,11 +84,11 @@ class Metadata(db.Model):
     protocol = db.Column(db.String(20), nullable = False)
     # Length is not stored separately right now.
 
-    # Link metadata back to the source and destination devices.
-    src_device = db.relationship('Devices', foreign_keys = [src_mac_id], backref='sent_packets')
+    # Link Metadata back to the source and destination of Devices.
+    src_device = db.relationship('Devices', foreign_keys = [src_mac_id], backref='sent_packets')            # relationship to link metadata to source device, backref allows access to sent packets from the device
     dst_device = db.relationship('Devices', foreign_keys = [dst_mac_id], backref='received_packets')
     
-    # Link each packet record to its flow.
+    # Metadata to Flow: Link each packet record to its flow.
     flow_metadata = db.relationship('Flows', foreign_keys = [flow_id], backref='packets')
 
 
@@ -89,7 +97,7 @@ class Alerts(db.Model):
     alert_id = db.Column(db.Integer, primary_key = True)
     timestamp = db.Column(db.DateTime, nullable = False, default = func.now())
     flow_id = db.Column(db.Integer, db.ForeignKey('flows.flow_id'), nullable = True)  # Optional for window-level detections.
-    severity = db.Column(db.String(50), nullable = False)
+    severity = db.Column(db.String(50), nullable = False)   #Low, Medium, or High
     status = db.Column(db.String(20), nullable = False)  # OPEN, IN_PROGRESS, or RESOLVED.
     score = db.Column(db.Float, nullable = False)  # Severity or anomaly score.
     is_anomaly = db.Column(db.Boolean, nullable = False, default=False)  # True when the alert is anomalous.
@@ -102,7 +110,6 @@ class Alerts(db.Model):
     anomaly_score = db.Column(db.Float, nullable = True)  # AI anomaly score.
     packet_count = db.Column(db.Integer, nullable = True)  # Packets captured in the window.
 
-
-    # Link alerts back to flows.
+    # Link Alert back to Flows
     flow_alert = db.relationship('Flows', foreign_keys = [flow_id], backref='alerts')
     # A user relationship can be added later if alerts need ownership.
