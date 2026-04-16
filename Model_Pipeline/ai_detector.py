@@ -1,61 +1,75 @@
+"""
+Standalone script for running the AI anomaly detector and printing results to the console.
+Useful for manual testing or debugging outside of Flask.
+For production use, detector_runner.py calls the model directly without going through this file.
+"""
+
 import pandas as pd
 import joblib
-import os
-from datetime import datetime
+import json
+import sys
+
+INPUT_FILE = "features.csv"
+MODEL_FILE = "isolation_forest_model.pkl"
+FEATURES_META_FILE = "model_features.json"
+OUTPUT_FILE = "ai_results.csv"
 
 
-class AIDetector:
-    def __init__(self, model_path="friday_ddos_model.joblib"):
-        if os.path.exists(model_path):
-            self.model = joblib.load(model_path)
-            print(f"[*] AI Model loaded: {model_path}")
-        else:
-            raise FileNotFoundError(f"Model file {model_path} not found. Train it first!")
+def main(input_file=INPUT_FILE, model_file=MODEL_FILE,
+         features_meta_file=FEATURES_META_FILE, output_file=OUTPUT_FILE):
 
-    def get_score(self, feature_row):
-        # calcs the anomaly and give score.
-        # 1. convert to a DataFrame if its a single row
-        if isinstance(feature_row, pd.Series):
-            X = pd.DataFrame([feature_row])
-        else:
-            X = feature_row.copy()
+    # Load the trained Isolation Forest model.
+    try:
+        model = joblib.load(model_file)
+    except FileNotFoundError:
+        print(f"[LANGuard] Model not found: {model_file}")
+        print("[LANGuard] Run train_model.py on normal traffic first.")
+        sys.exit(1)
 
-        # 2. safety check: only drop 'window_start' if it actually exists
-        if 'window_start' in X.columns:
-            X = X.drop(columns=['window_start'])
+    # Load the feature columns the model was trained on.
+    # The order matters; mixing it up would lead to bad predictions.
+    try:
+        with open(features_meta_file) as f:
+            feature_cols = json.load(f)
+    except FileNotFoundError:
+        print(f"[LANGuard] Feature metadata not found: {features_meta_file}")
+        print("[LANGuard] Re-run train_model.py to regenerate it.")
+        sys.exit(1)
 
-        # 3. ensure columns are in the EXACT same order as training
-        # this matches the 9 features from your training script
-        # if its not in exact order, model will break/not function correctly
-        expected_columns = [
-            "packet_count", "unique_src_ips", "unique_dst_ips",
-            "unique_dst_ports", "avg_packet_len", "max_packet_len",
-            "tcp_count", "udp_count", "syn_count"
-        ]
+    df = pd.read_csv(input_file)
 
-        # reorder X to match expected_columns
-        X = X[expected_columns]
+    if df.empty:
+        print("[LANGuard] features.csv is empty.")
+        sys.exit(1)
 
-        # 4. get the score
-        raw_score = self.model.decision_function(X)[0]
+    # Catch the case where extract_features.py produced unexpected columns.
+    missing = [c for c in feature_cols if c not in df.columns]
+    if missing:
+        print(f"[LANGuard] Missing columns: {missing}")
+        print("[LANGuard] Re-run extract_features.py or re-train the model.")
+        sys.exit(1)
 
-        # returns raw score
-        return round(raw_score, 6)
+    X = df[feature_cols]
+
+    # decision_function returns a continuous score; more negative means more anomalous.
+    # predict() turns that score into a label: -1 for anomaly, 1 for normal.
+    scores = model.decision_function(X)
+    predictions = model.predict(X)
+
+    df["ai_status"] = ["ANOMALY" if p == -1 else "NORMAL" for p in predictions]
+    df["anomaly_score"] = scores.round(4)
+
+    # Print a quick summary so suspicious windows are easy to spot.
+    print(f"\n{'window_start':<25} {'ai_status':<10} {'anomaly_score'}")
+    print("-" * 55)
+    for _, row in df.iterrows():
+        flag = " <-- ANOMALY" if row["ai_status"] == "ANOMALY" else ""
+        print(f"{str(row['window_start']):<25} {row['ai_status']:<10} {row['anomaly_score']:.4f}{flag}")
+
+    df.to_csv(output_file, index=False)
+    print(f"\n[LANGuard] Results saved to {output_file}")
+    return df
 
 
-# sample run
 if __name__ == "__main__":
-    detector = AIDetector()
-
-    input_file = "local_packets_to_featured.csv"
-    if os.path.exists(input_file):
-        df = pd.read_csv(input_file)
-
-        if not df.empty:
-            # Score the most recent window
-            last_window = df.iloc[-1]
-            raw, prob = detector.get_score(last_window)
-
-            print(f"Window Start: {last_window['window_start']}")
-            print(f"Raw Decision Score: {raw}")
-            print(f"Anomaly Probability: {prob}")
+    main()
