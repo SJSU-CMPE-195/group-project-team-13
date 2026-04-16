@@ -1,3 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy     #import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()   #create a SQLAlchemy instance
+# Shared SQLAlchemy instance used by the app and all models.
+db = SQLAlchemy()
