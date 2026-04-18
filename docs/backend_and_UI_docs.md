@@ -27,3 +27,8 @@
     + application layer: user routes with application services such as view alert table, see details, or mark resolves alert
     + database layer: database schema interacting with application layer to transmit data
 
+- Stress test in locustfile.py
+    + is implemented to observe how LANGuard’s system behavior under different levels of stress. 
+    + use Locust since backend routes written in Python, and connect Flask app. 
+    + three frequent used routes: /login, /dashboard, and /alert to evaluate how the system handles stress. 
+    + load is started low with 20 concurrent users and increased until reaching 100 for the last test, 10 seconds to reach full load applied to all these three tests
