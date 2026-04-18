@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Profile | LANGUARD{% endblock %}
 {% block content %}
-<h1><span class="goback" onclick="window.history.back()">Back</span> Profile</h1>
+
 <div class="profile">
+  <h1>Profile</h1>  
   <div>
     <p class="title">ID</p>
     <p class="subtitle">{{user.user_id}}</p>
@@ -19,6 +20,8 @@
     <p class="title">Role</p>
     <p class="subtitle">{{user.role}}</p>
   </div>
+  <button class="back-btn" onclick="window.history.back()"> Back
+
  
 </div>
 {% endblock %}
