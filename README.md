@@ -1,6 +1,3 @@
-![CI](https://github.com/SJSU-CMPE-195/group-project-team-13/actions/workflows/ci.yml/badge.svg)
-![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen)
-
 # LANGuard IDS on a Raspberry Pi
 
 With the growing popularity of cybercrime, many homes and businesses are affected by online threats that target devices that are left vulnerable to attacks. Without dedicated security working to protect these devices, they are left open to attacks. Technology to detect malicious attacks exists, but is expensive and complex. LANGuard is not only a Wi-Fi analyer to detect network traffic in real-time, but also acts as a remedy to the existence inequality issue in which lower-income class and small companies unable to afford to a secured network and at risk of being cyber-attack targets
@@ -17,13 +14,10 @@ With the growing popularity of cybercrime, many homes and businesses are affecte
  ---
 
 ## Demo
+
 [Link to demo video or GIF]
 https://drive.google.com/file/d/1vpZKb1r3NBTUbrT9UaBzOmEkiChGC-hf/view?usp=drive_link
 
-## Deployment
-LANGuard is deployed on Raspberry Pi 5 on an isolated test network (192.168.10.0/24).
-**Video Demo:** [Watch here]https://drive.google.com/file/d/1D73_HWORP1K-yq_I0If6k7w8kG_H7gXr/view?usp=drive_link 
-Google Doc for Implementation and Coverage: https://docs.google.com/document/d/16n9BVemafFW93JKzPuqRenOqcRtTnBjxKr87XMmqGcU/edit?usp=drive_link
 
 - Prototype login credentials with seeding data 
 

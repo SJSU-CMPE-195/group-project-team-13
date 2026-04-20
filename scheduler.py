@@ -10,41 +10,43 @@ import subprocess
 import logging
 from datetime import datetime
 
-# Only one scheduler instance should exist at runtime.
+# Module-level scheduler instance — only one should ever exist at runtime
 scheduler = BackgroundScheduler()
 logger = logging.getLogger(__name__)
 
 
 def run_detection_task():
     """
-    Run the detection job that fires every two minutes.
+    The actual work that runs every 2 minutes.
 
-    The pipeline has two steps:
-        1. extract_features.py reads packets.csv and computes per-window stats
-        2. detector_runner runs the rules and the AI model, then saves alerts to the DB
+    Two-step process:
+      1. extract_features.py reads packets.csv and computes per-window stats
+      2. detector_runner applies rule checks and the AI model, then saves alerts to the DB
 
-    Step 1 runs as a subprocess because extract_features.py is a standalone script.
-    Step 2 imports directly so it can use the Flask app context and write to the DB.
+    We run step 1 as a subprocess because extract_features.py is a standalone script
+    that was designed to be called from the command line. Step 2 imports directly
+    so it can share the Flask app context and write to the database.
     """
     try:
         print(f"\n[{datetime.now()}] Running detection pipeline...")
 
-        # Step 1: turn raw packet rows into feature windows.
+        # Step 1: turn raw packet rows into aggregated feature windows
         result = subprocess.run(
             ['python3', 'Model_Pipeline/extract_features.py'],
             capture_output=True,
             text=True,
-            timeout=30  # If this takes longer than 30 seconds, something is off.
+            timeout=30   # if feature extraction takes longer than 30s something is wrong
         )
 
         if result.returncode != 0:
-            # Keep the log readable by showing only a short slice of stderr.
+            # Print just the first 200 chars of stderr so the log doesn't get spammed
             print(f"[WARNING] Feature extraction: {result.stderr[:200]}")
             return
 
-        print("[OK] Features extracted")
+        print("[✓] Features extracted")
 
-        # Step 2: run the detectors inside the Flask app context.
+        # Step 2: run detectors and persist results — needs the Flask app context
+        # because it writes to the database via SQLAlchemy
         try:
             from detector_runner import run_detection_pipeline
             from app import app, db
@@ -52,7 +54,7 @@ def run_detection_task():
             with app.app_context():
                 success = run_detection_pipeline(db)
                 if success:
-                    print("[OK] Detection pipeline completed")
+                    print("[✓] Detection pipeline completed")
                 else:
                     print("[WARNING] Detection pipeline completed with warnings")
         except Exception as e:
@@ -79,7 +81,7 @@ def start_scheduler(app):
                 IntervalTrigger(minutes=2),
                 id='detection_pipeline',
                 name='Detection Pipeline',
-                replace_existing=True  # Safe to call again without duplicate jobs.
+                replace_existing=True   # safe to call again without creating duplicate jobs
             )
             scheduler.start()
             print("[LANGuard] Background detection scheduler started (runs every 2 minutes)")

@@ -2,71 +2,70 @@ import pandas as pd
 import os
 from datetime import datetime
 
-
 class RuleDetector:
-    """
-    Threshold-based detector that checks each feature window against a set of
-    hand-tuned rules. Unlike the AI model, these rules are fully interpretable —
-    you can read exactly why an alert fired. Trade-off is that you have to manually
-    tune the thresholds and the rules won't catch attacks that don't match a known pattern.
-    """
-
     def __init__(self, output_file='rule_results.csv'):
         self.output_file = output_file
 
-        # Create the output file up front so log_alert can always append to it.
         if not os.path.isfile(self.output_file):
-            pd.DataFrame(columns=['Date', 'Alert_Name', 'Severity']).to_csv(self.output_file, index=False)
+            pd.DataFrame(columns=['Date', 'Alert_Name', 'Severity', 'Source_IP', 'Window_Start']).to_csv(self.output_file, index=False)
 
-    def log_alert(self, name, severity):
-        """Appends a single alert row to the CSV and prints it live."""
+    def log_alert(self, name, severity, source_ip='Unknown', window_start=''):
         new_alert = {
             'Date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             'Alert_Name': name,
-            'Severity': severity
+            'Severity': severity,
+            'Source_IP': source_ip,
+            'Window_Start': window_start
         }
-
-        # Append instead of rewriting the whole file for every alert.
         df_alert = pd.DataFrame([new_alert])
         df_alert.to_csv(self.output_file, mode='a', header=False, index=False)
-
-        print(f"!!! [RULE ALERT] {severity}: {name}")
+        print(f"!!! [RULE ALERT] {severity}: {name} from {source_ip}")
 
     def evaluate(self, feature_row):
-        """
-        Runs every rule against a single feature window (one row from features.csv).
-        Multiple rules can fire on the same window — each gets its own alert row.
-        """
+        source_ip = str(feature_row.get('top_src_ip', 'Unknown'))
+        window_start = str(feature_row.get('window_start', ''))
 
-        # Rule 1: too many unique destination ports in one window usually means port scanning.
-        # Normal hosts use only a handful of ports; scanners hit many more.
-        if feature_row['unique_dst_ports'] > 20:
-            self.log_alert("Potential Port Scan", "High")
+        # rule 1: port scan — hitting many different destination ports
+        if feature_row['unique_dst_ports'] > 50:
+            self.log_alert("Potential Port Scan", "High", source_ip, window_start)
 
-        # Rule 2: most packets are SYN with no matching ACKs, which looks like a SYN flood.
-        # We also require at least 50 packets so tiny samples do not trigger it.
+        # rule 2: SYN flood — mostly SYN packets with high volume
         syn_ratio = feature_row['syn_count'] / feature_row['packet_count'] if feature_row['packet_count'] > 0 else 0
-        if syn_ratio > 0.8 and feature_row['packet_count'] > 50:
-            self.log_alert("SYN Flood Detected", "High")
+        if syn_ratio > 0.8 and feature_row['packet_count'] > 200:
+            self.log_alert("SYN Flood Detected", "High", source_ip, window_start)
 
-        # Rule 3: almost all traffic is UDP, which can point to flooding or DNS abuse.
-        # The 90% threshold leaves room for networks that normally use a lot of UDP.
-        if feature_row['udp_count'] > (feature_row['packet_count'] * 0.9):
-            self.log_alert("UDP Flooding", "Medium")
+        # rule 3: UDP flood — nearly all traffic is UDP at high volume
+        if feature_row['udp_count'] > (feature_row['packet_count'] * 0.95) and feature_row['packet_count'] > 100:
+            self.log_alert("UDP Flooding", "Medium", source_ip, window_start)
 
-        # Rule 4: talking to lots of different hosts in one window suggests a sweep.
-        if feature_row['unique_dst_ips'] > 15:
-            self.log_alert("Network Sweep/Discovery", "Medium")
+        # rule 4: network sweep — scanning many different destination IPs
+        if feature_row['unique_dst_ips'] > 30:
+            self.log_alert("Network Sweep/Discovery", "Medium", source_ip, window_start)
 
-        # Rule 5: unusually large packets can point to bulk transfer or MTU trouble.
-        if feature_row['avg_packet_len'] > 1200:
-            self.log_alert("Large Packet Volume", "Low")
+        # rule 5: large packets — possible data exfiltration
+        if feature_row['avg_packet_len'] > 1400:
+            self.log_alert("Large Packet Volume", "Low", source_ip, window_start)
 
-        # Rule 6: an extremely high packet count in one window is often a burst.
+        # rule 6: traffic burst — extremely high packet count in one window
         if feature_row['packet_count'] > 5000:
-            self.log_alert("High Traffic Volume Burst", "Medium")
+            self.log_alert("High Traffic Volume Burst", "Medium", source_ip, window_start)
 
-        # Rule 7: almost no traffic can mean the interface dropped, the cable was unplugged,
-        # or something upstream is blocking traffic.
-        if feature_row['packet_count'] < 5:
-            self.log_alert("Network Silent / Possible Outage", "Low")
+        # rule 7: ICMP flood — ping flood attack
+        if feature_row.get('icmp_count', 0) > 500:
+            self.log_alert("ICMP Flood (Ping Flood)", "High", source_ip, window_start)
+
+        # rule 8: ARP spoofing — excessive ARP replies on the network
+        if feature_row.get('arp_count', 0) > 100:
+            self.log_alert("ARP Spoofing Detected", "High", source_ip, window_start)
+
+        # rule 9: SSH brute force — many connection attempts to port 22
+        if feature_row.get('ssh_attempts', 0) > 30:
+            self.log_alert("SSH Brute Force Attack", "High", source_ip, window_start)
+
+        # rule 10: suspicious DNS activity — unusually high DNS traffic
+        if feature_row.get('dns_count', 0) > 200:
+            self.log_alert("Suspicious DNS Activity", "Medium", source_ip, window_start)
+
+        # rule 11: Slowloris — many HTTP SYN connections with very few completions
+        if feature_row.get('http_syn_count', 0) > 20 and feature_row.get('fin_count', 0) < 3:
+            self.log_alert("Slowloris / HTTP Flood", "High", source_ip, window_start)
