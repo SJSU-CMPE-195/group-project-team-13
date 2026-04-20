@@ -17,10 +17,12 @@ With the growing popularity of cybercrime, many homes and businesses are affecte
  ---
 
 ## Demo
-
 [Link to demo video or GIF]
 https://drive.google.com/file/d/1vpZKb1r3NBTUbrT9UaBzOmEkiChGC-hf/view?usp=drive_link
 
+## Deployment
+LANGuard is deployed on Raspberry Pi 5 on an isolated test network (192.168.10.0/24).
+**Video Demo:** [Watch here](https://youtube.com/your-link)
 
 - Prototype login credentials with seeding data 
 
