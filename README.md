@@ -22,7 +22,8 @@ https://drive.google.com/file/d/1vpZKb1r3NBTUbrT9UaBzOmEkiChGC-hf/view?usp=drive
 
 ## Deployment
 LANGuard is deployed on Raspberry Pi 5 on an isolated test network (192.168.10.0/24).
-**Video Demo:** [Watch here](https://youtube.com/your-link)
+**Video Demo:** [Watch here]https://drive.google.com/file/d/1D73_HWORP1K-yq_I0If6k7w8kG_H7gXr/view?usp=drive_link 
+Google Doc for Implementation and Coverage: https://docs.google.com/document/d/16n9BVemafFW93JKzPuqRenOqcRtTnBjxKr87XMmqGcU/edit?usp=drive_link
 
 - Prototype login credentials with seeding data 
 
