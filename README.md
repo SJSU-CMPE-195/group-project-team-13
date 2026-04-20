@@ -1,3 +1,6 @@
+![CI](https://github.com/SJSU-CMPE-195/group-project-team-13/actions/workflows/ci.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen)
+
 # LANGuard IDS on a Raspberry Pi
 
 With the growing popularity of cybercrime, many homes and businesses are affected by online threats that target devices that are left vulnerable to attacks. Without dedicated security working to protect these devices, they are left open to attacks. Technology to detect malicious attacks exists, but is expensive and complex. LANGuard is not only a Wi-Fi analyer to detect network traffic in real-time, but also acts as a remedy to the existence inequality issue in which lower-income class and small companies unable to afford to a secured network and at risk of being cyber-attack targets
