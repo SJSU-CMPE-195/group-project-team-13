@@ -80,6 +80,10 @@ source venv/bin/activate  # Linux/macOS
 # Install dependencies
 pip install -r requirements.txt
 
+#Start Application
+
+python app.py
+
 ```
 
 ### Configuration
