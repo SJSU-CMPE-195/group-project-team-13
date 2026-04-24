@@ -1,5 +1,6 @@
 ![CI](https://github.com/SJSU-CMPE-195/group-project-team-13/actions/workflows/ci.yml/badge.svg)
 ![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/14ec4884-8bd0-4b2f-a6a6-a88b9a458a1e/deploy-status)](https://app.netlify.com/projects/lustrous-moonbeam-6e7efa/deploys)
 
 # LANGuard IDS on a Raspberry Pi
 
