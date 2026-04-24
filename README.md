@@ -1,5 +1,5 @@
 ![CI](https://github.com/SJSU-CMPE-195/group-project-team-13/actions/workflows/ci.yml/badge.svg)
-![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
 
 # LANGuard IDS on a Raspberry Pi
 
