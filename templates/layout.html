@@ -8,9 +8,9 @@
 </head>
 <body>
   <header>
-    <nav>
+    <nav class="navbar">
       <h1 class="logo">LANGUARD</h1>
-      <ul style="list-style-type: none; padding: 0;">
+      <ul class="nav-links">
         {% if session.get('logged_in') %}
           <!-- Links that depend on the signed-in role. -->
           {% if session.get('role') == 'USER' %}
