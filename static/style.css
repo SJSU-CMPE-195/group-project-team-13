@@ -55,6 +55,53 @@ h2 {
     padding: 8px;
 }
 
+
+/* Navigation bar styles. */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    color: white;
+    font-weight: 500;
+    padding: 8px 12px;
+    position: relative;
+    transition: color 0.5s ease, transform 0.5s ease;
+}
+
+/* Hover animation (smooth color + slight lift) */
+.nav-links li a:hover {
+    color: #B797E1;
+    transform: translateY(-2px);
+}
+
+/* Underline animation */
+.nav-links li a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background: #B797E1;
+    left: 0;
+    bottom: 0;
+    transition: width 0.5s ease;
+}
+
+.nav-links li a:hover::after {
+    width: 100%;
+}
+
+
 /* Shared layout styles. */
 .flashes {
     list-style: none;
@@ -85,6 +132,7 @@ h2 {
     color: #46400a;
     border: 1px solid #e7d435;
 }
+
 
 /* Profile page. */
 .profile {
@@ -134,7 +182,8 @@ h2 {
     font-size: 0.9em;
 }
 
-/* Admin table styles. */
+
+/* User table styles. */
 .user-table {
     width: 90%;
     margin: 20px auto;
@@ -177,6 +226,7 @@ h2 {
 .user-table button:hover {
     background-color: #003366;
 }
+
 
 /* Dashboard styles. */
 .dashboard {
@@ -287,6 +337,7 @@ h2 {
     color: #27ae60;
     font-weight: bold;
 }
+
 
 /* Alert detail page. */
 .alert-detail {
