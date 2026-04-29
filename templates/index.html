@@ -2,14 +2,45 @@
 {% block title %}Home | LANGUARD{% endblock %}
 {% block content %}
 <section class="hero">
-  <h2>Welcome to LANGUARD</h2>
-  <p>Explore our featutes with modern technology to detect your WIFI.</p>
+  <div>
+    <h2>Let's Protect YOUR Network With LANGUARD</h2>
+    <p>
+      Explore our featutes with modern technology to detect your WiFi. 
+      A lightweight intrusion detection system powered by edge computing,
+      real-time packet analysis, and machine learning.
+    </p>
+    <a href="{{ url_for('user_bp.login') }}" class="btn-start">Get Started</a>
+  </div>
 </section>
 
-<section id="services" class="services">
-  <h2>Our Services</h2>
+<section class="services">
+  <h2>Core Features</h2>
   <div class="service-grid">
-    <div class="card">Detect network real-time</div>
+    <div class="service-card">
+      <h3>Real-Time Packet Analysis</h3>
+      <p>
+        Monitor, capture, and analyze your network traffic in real-time to identify 
+        potential threats and anomalies
+      </p>
+    </div>
+    <div class="service-card">
+      <h3>AI Anomaly Detection</h3>
+      <p>
+        Isolation Forest model detects unusual behavior patterns in your network
+      </p>
+    </div>
+    <div class="service-card">
+      <h3>Rule-Based Detection</h3>
+      <p>
+        Suricata used for identifying known threats like port scans and SYN floods
+      </p>
+    </div>
+    <div class="service-card">
+      <h3>Local Data Storage</h3>
+      <p>
+        SQLite database stores alerts securely on your device, ensuring privacy and quick access
+      </p>
+    </div>
   </div>
 </section>
 {% endblock %}
