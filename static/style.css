@@ -1,12 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    background: #a3a9ac41;
+    background: #f4f6f8;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #1E1E1E;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: white;
     padding: 1em;
     text-align: center;
@@ -114,6 +114,23 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.logo {
+    color: white; 
+    text-decoration: none;
+    font-family: "Orbitron", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    background: linear-gradient(90deg, #00c896, #00e0ff);
+    transition: 0.3s ease;
+}
+
+.logo:hover {
+    background: linear-gradient(90deg, #00e0ff, #00c896);
+    letter-spacing: 2px;
+    transform: scale(1.05);
 }
 
 .nav-links {

@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}LANGUARD{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Rubik+Storm&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
     <nav class="navbar">
-      <h1 class="logo">LANGUARD</h1>
+      <h1 class="logo">
+        <a href="{{ url_for('index') }}">LANGUARD</a>
+      </h1>
       <ul class="nav-links">
         {% if session.get('logged_in') %}
           <!-- Links that depend on the signed-in role. -->
