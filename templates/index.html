@@ -3,39 +3,43 @@
 {% block content %}
 <section class="hero">
   <div>
-    <h2>Let's Protect YOUR Network With LANGUARD</h2>
+    <h2>Let's Protect Your Network With LANGUARD</h2>
     <p>
-      Explore our featutes with modern technology to detect your WiFi. 
       A lightweight intrusion detection system powered by edge computing,
-      real-time packet analysis, and machine learning.
+      real-time packet analysis, and machine learning
     </p>
+    <p>
+      Explore our features with modern technology to detect your WiFi 
+    </p>
+    {% if not session.get('logged_in') %}
     <a href="{{ url_for('user_bp.login') }}" class="btn-start">Get Started</a>
+    {% endif %}
   </div>
 </section>
 
 <section class="services">
   <h2>Core Features</h2>
-  <div class="service-grid">
-    <div class="service-card">
+  <div class="services-grid">
+    <div class="services-card">
       <h3>Real-Time Packet Analysis</h3>
       <p>
         Monitor, capture, and analyze your network traffic in real-time to identify 
         potential threats and anomalies
       </p>
     </div>
-    <div class="service-card">
+    <div class="services-card">
       <h3>AI Anomaly Detection</h3>
       <p>
         Isolation Forest model detects unusual behavior patterns in your network
       </p>
     </div>
-    <div class="service-card">
+    <div class="services-card">
       <h3>Rule-Based Detection</h3>
       <p>
         Suricata used for identifying known threats like port scans and SYN floods
       </p>
     </div>
-    <div class="service-card">
+    <div class="services-card">
       <h3>Local Data Storage</h3>
       <p>
         SQLite database stores alerts securely on your device, ensuring privacy and quick access
@@ -43,4 +47,15 @@
     </div>
   </div>
 </section>
+
+<section class="how">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step">1. Capture network packets</div>
+    <div class="step">2. Extract and analyze behavior features</div>
+    <div class="step">3. Detect anomalies and threats</div>
+    <div class="step">4. Store alerts in local database</div>
+  </div>
+</section>
+
 {% endblock %}
