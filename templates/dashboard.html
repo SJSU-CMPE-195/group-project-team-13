@@ -96,6 +96,8 @@
           <button type="submit" class="btn-dismiss">Mark as Resolved</button>
         </form>
       </div>
+      {%else%}
+      <p>No active security events detected.</p>
       {% endif %}
       {% endfor %}
     </div>
@@ -129,6 +131,8 @@
       </div>
       {% endfor %}
     </div>
+    {%else%}
+      <p>No resolved alerts in the current log.</p>
     {% endif %}
   </section>
 
