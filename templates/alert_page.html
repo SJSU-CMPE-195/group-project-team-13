@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 {% block title %}Alerts | LANGUARD{% endblock %}
-
 {% block content %}
-
+<script>
+  setInterval(function() { location.reload(); }, 10000);
+</script>
 <div class="alerts-container">
 
-  <h2>All Alerts</h2>
+  <h2>Security Alerts</h2>
 
   {% if alerts %}
   <table class="alerts-table">
@@ -20,13 +21,15 @@
     </thead>
     <tbody>
       {% for alert in alerts %}
-      <tr>
+      <tr class="alert-row {{ alert.severity|lower }}">
         <td>{{ alert.alert_id }}</td>
-        <td>{{ alert.timestamp }}</td>
+        <td>{{ alert.timestamp.strftime('%Y-%m-%d %H:%M:%S') if alert.timestamp else '' }}</td>
         <td class="severity {{ alert.severity|lower }}">
           {{ alert.severity }}
         </td>
-        <td>{{ alert.status }}</td>
+        <td class="status {{ alert.status|lower }}">
+          {{ alert.status }}
+        </td>
         <td>
           <a href="{{ url_for('user_bp.alert_detail', alert_id = alert.alert_id) }}" class="view-btn">
             Details

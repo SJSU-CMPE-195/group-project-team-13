@@ -457,21 +457,30 @@ h2 {
 .alerts-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
+    background: #0f172a;
+    color: #e5e7eb;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.alerts-table th, .alerts-table td {
+.alerts-table td {
     padding: 12px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+    font-size: 0.9rem;
 }
 
 .alerts-table th {
-    background-color: #004b8d;
-    color: white;
+    background-color: #111827;
+    color: #93c5fd;
+    padding: 12px;
+    text-align: left;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.alert-row:hover {
+    background-color: #1f2937;
+    transition: 0.3s ease;
 }
 
 .view-btn {
@@ -501,6 +510,19 @@ h2 {
     color: #27ae60;
     font-weight: bold;
 }
+
+.status.open {
+    color: #f59e0b;
+}
+
+.status.resolved {
+    color: #16a34a;
+}
+
+.status.in_progress {
+    color: #3b82f6;
+}
+
 
 
 /* Alert detail page. */
