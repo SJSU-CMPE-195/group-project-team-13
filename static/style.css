@@ -119,7 +119,7 @@ h2 {
 .logo {
     color: white; 
     text-decoration: none;
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
@@ -583,3 +583,90 @@ h2 {
 .detail-actions { margin-top: 20px; display: flex; gap: 10px; }
 
 
+
+/* Login page. */
+.login-container {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    border-radius: 12px;
+    background: rgba(10, 20, 30, 0.85);
+    border: 1px solid rgba(0, 224, 255, 0.2);
+    color: white;
+    text-align: center;
+}
+
+.login-card h2 {
+    margin-bottom: 10px;
+    font-family: Orbitron, sans-serif;
+    letter-spacing: 1px;
+}
+
+.login-subtitle {
+    font-size: 1em; 
+    color:#9d9696; 
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.login-form {
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.input {
+    padding: 3px;
+    text-align: left;
+}
+
+.input label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.input input {
+    width: 95%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #0b1a24;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input input:focus {
+    border-color: #00e0ff;
+    box-shadow: 0 0 10px rgba(0,224,255,0.3);
+}
+
+.login-btn {
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #00c896, #00e0ff);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0,224,255,0.4);
+}
+
+.register-link a {
+    color: #00e0ff;
+    text-decoration: none;
+}
