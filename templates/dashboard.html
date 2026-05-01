@@ -21,7 +21,10 @@
 } %}
 
 <div class="dashboard">
-
+  <div class="dashboard-header">
+    <h1>Network Dashboard</h1>
+    <p>Overview of your network's security status and recent activity.</p>
+  </div>
   <!-- Quick network status banner. -->
   {% if alert_count > 0 %}
   <div class="status-banner status-danger">
@@ -96,6 +99,31 @@
     {% else %}
     <div class="no-alerts-box">
       <p class="no-alerts">No alerts right now. Your network looks clean.</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="dashboard-section">
+    <h3>Recent Resolved</h3>
+  
+    {% if resolve_alerts %}
+    <div class="alert-cards resolved-section">
+      {% for alert in resolve_alerts %}
+      <div class="alert-card resolved">
+        <div class="alert-card-header">
+          <span class="alert-severity-icon">Closed</span>
+          <div class="alert-card-title">
+            <strong>{{ alert.alert_name or 'Unknown Alert' }}</strong>
+            <span class="alert-card-time">
+              {{ alert.timestamp.strftime('%b %d at %I:%M %p') if alert.timestamp else '' }}
+            </span>
+          </div>
+        </div>
+        <p class="alert-card-desc">
+          {{ friendly.get(alert.alert_name, alert.description) }}
+        </p>
+      </div>
+      {% endfor %}
     </div>
     {% endif %}
   </section>

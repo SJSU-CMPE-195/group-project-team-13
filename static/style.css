@@ -308,6 +308,7 @@ h2 {
 .dashboard-header {
     text-align: center;
     margin-bottom: 30px;
+    color: #0b5c57;
 }
 
 .dashboard-stats {
@@ -320,10 +321,15 @@ h2 {
 .stat-card {
     flex: 1;
     background: white;
-    padding: 25px;
+    padding: 10px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .stat-number {
@@ -352,6 +358,88 @@ h2 {
     padding: 8px 0;
     border-bottom: 1px solid #eee;
 }
+
+/* Network status banner. */
+.status-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+.status-banner h2 { margin: 0 0 5px 0; font-size: 1.6rem; }
+.status-banner p { margin: 0; font-size: 1rem; opacity: 0.9; }
+.status-danger { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+.status-icon { font-size: 3rem; }
+.status-safe { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
+.stat-icon { font-size: 2rem; margin-bottom: 8px; }
+
+/* Alert cards. */
+.alert-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.alert-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 6px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.alert-card-high { border-left-color: #e74c3c; background: #fff8f8; }
+.alert-card-medium { border-left-color: #f39c12; background: #fffdf0; }
+.alert-card-low { border-left-color: #3498db; background: #f0f8ff; }
+
+.alert-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+.alert-card-time { font-size: 0.85rem; color: #888; margin-top: 2px; }
+.alert-card-title {
+    display: flex;
+    flex-direction: column;
+}
+.alert-card-title strong { font-size: 1.1rem; }
+.alert-severity-icon { font-size: 1.5rem; }
+.alert-card-desc { margin: 0 0 10px 0; color: #444; font-size: 0.95rem; }
+.alert-card-source { margin: 0 0 12px 0; font-size: 0.85rem; color: #666; font-family: monospace; }
+
+/* Empty alerts state. */
+.no-alerts-box {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+}
+.no-alerts { color: #27ae60; font-size: 1.1rem; margin: 0; }
+
+/* Dismiss button. */
+.btn-dismiss {
+    padding: 8px 18px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.btn-dismiss:hover { background: #45a049; }
+
+.resolved {
+    opacity: 0.6;
+    border-left-color: #95a5a6;
+    background: #f4f6f7;
+}
+
+.resolved-section {
+    margin-top: 10px;
+}
+
 
 
 /* Alert table page. */
@@ -459,68 +547,6 @@ h2 {
     background-color: #0056b3;
 }
 
-/* Network status banner. */
-.status-banner {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 25px 30px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-}
-.status-banner h2 { margin: 0 0 5px 0; font-size: 1.6rem; }
-.status-banner p { margin: 0; font-size: 1rem; opacity: 0.9; }
-.status-icon { font-size: 3rem; }
-.status-safe { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
-.status-danger { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
-
-/* Stat card icons. */
-.stat-icon { font-size: 2rem; margin-bottom: 8px; }
-
-/* Alert cards. */
-.alert-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-.alert-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    border-left: 6px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.alert-card-high { border-left-color: #e74c3c; background: #fff8f8; }
-.alert-card-medium { border-left-color: #f39c12; background: #fffdf0; }
-.alert-card-low { border-left-color: #3498db; background: #f0f8ff; }
-
-.alert-card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-.alert-severity-icon { font-size: 1.5rem; }
-.alert-card-title {
-    display: flex;
-    flex-direction: column;
-}
-.alert-card-title strong { font-size: 1.1rem; }
-.alert-card-time { font-size: 0.85rem; color: #888; margin-top: 2px; }
-.alert-card-desc { margin: 0 0 10px 0; color: #444; font-size: 0.95rem; }
-.alert-card-source { margin: 0 0 12px 0; font-size: 0.85rem; color: #666; font-family: monospace; }
-
-/* Dismiss button. */
-.btn-dismiss {
-    padding: 8px 18px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-.btn-dismiss:hover { background: #45a049; }
 
 /* Alert detail page extras. */
 .detail-banner { margin-bottom: 25px; }
@@ -528,11 +554,4 @@ h2 {
 .status-info { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
 .detail-actions { margin-top: 20px; display: flex; gap: 10px; }
 
-/* Empty alerts state. */
-.no-alerts-box {
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    text-align: center;
-}
-.no-alerts { color: #27ae60; font-size: 1.1rem; margin: 0; }
+

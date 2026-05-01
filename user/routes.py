@@ -101,10 +101,11 @@ def dashboard():
     packet_count = Metadata.query.count()        #total number of packets from database
     total_alerts = Alerts.query.count()      #total number of alerts
     high_alerts = Alerts.query.filter(Alerts.severity.ilike('High')).count()       #count high severity alerts
+    resolve_alerts = Alerts.query.filter_by(status='RESOLVED').order_by(Alerts.timestamp.desc()).limit(5).all()     #recent resolved alerts 
 
     return render_template('dashboard.html', alerts=recent_alerts, packet_count=packet_count,
                            alert_count=alert_count, threats_blocked=threats_blocked,
-                           total_alerts=total_alerts, high_alerts=high_alerts)
+                           total_alerts=total_alerts, high_alerts=high_alerts, resolve_alerts=resolve_alerts)
 
 
 @user_bp.route('/alerts')
