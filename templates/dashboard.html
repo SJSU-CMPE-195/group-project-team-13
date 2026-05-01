@@ -50,21 +50,25 @@
       <div class="stat-icon">Resolved</div>
       <h3>Threats Resolved</h3>
       <p class="stat-number">{{ threats_blocked or 0 }}</p>
+      <p class="stat-sub">Alerts successfully mitigated</p>
     </div>
     <div class="stat-card">
       <div class="stat-icon">Active</div>
       <h3>Active Threats</h3>
       <p class="stat-number {% if alert_count > 0 %}alert{% endif %}">{{ alert_count or 0 }}</p>
+      <p class="stat-sub">Currently under detection</p>
     </div>
     <div class="stat-card">
       <div class="stat-icon">Packets</div>
       <h3>Packets Monitored</h3>
       <p class="stat-number">{{ packet_count or 0 }}</p>
+      <p class="stat-sub">Packets analyzed in real time</p>
     </div>
     <div class="stat-card">
       <div class="stat-icon">High</div>
       <h3>High Severity</h3>
       <p class="stat-number {% if high_alerts > 0 %}alert{% endif %}">{{ high_alerts or 0 }}</p>
+      <p class="stat-sub">Critical or high-risk alerts</p>
     </div>
   </section>
 

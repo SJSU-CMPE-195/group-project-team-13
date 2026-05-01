@@ -440,6 +440,12 @@ h2 {
     margin-top: 10px;
 }
 
+.stat-sub {
+    font-size: 0.85rem;
+    color: #716f6f;
+    margin-top: 6px;
+}
+
 
 
 /* Alert table page. */
