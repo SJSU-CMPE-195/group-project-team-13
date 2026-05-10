@@ -22,7 +22,12 @@
   <h2>Alert Details</h2>
 
   <!-- Alert severity banner. -->
-  <div class="status-banner detail-banner {% if alert.severity == 'High' %}status-danger{% elif alert.severity == 'Medium' %}status-warning{% else %}status-info{% endif %}">
+  {% set severity_class = {
+    'High': 'status-danger',
+    'MEDIUM': 'status-warning',
+    'LOW': 'status-info'
+  } %}
+  <div class="status-banner detail-banner {{ severity_class.get(alert.severity, 'status-info') }}">
     <span class="status-icon">{{ alert.severity or 'Low' }}</span>
     <div>
       <h2>{{ alert.alert_name or 'Alert' }}</h2>

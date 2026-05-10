@@ -367,12 +367,13 @@ h2 {
     padding: 25px 30px;
     border-radius: 12px;
     margin-bottom: 25px;
+    color: white;
 }
 .status-banner h2 { margin: 0 0 5px 0; font-size: 1.6rem; }
 .status-banner p { margin: 0; font-size: 1rem; opacity: 0.9; }
-.status-danger { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+.status-danger { background: linear-gradient(135deg, #ee6758, #d03d2d); }
 .status-icon { font-size: 3rem; }
-.status-safe { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
+.status-safe { background: linear-gradient(135deg, #2ecc71, #27ae60); }
 .stat-icon { font-size: 2rem; margin-bottom: 8px; }
 
 /* Alert cards. */
@@ -578,8 +579,8 @@ h2 {
 
 /* Alert detail page extras. */
 .detail-banner { margin-bottom: 25px; }
-.status-warning { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
-.status-info { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+.status-warning { background: linear-gradient(135deg, #eea125, #e67e22); }
+.status-info { background: linear-gradient(135deg, #519fd3, #2980b9); }
 .detail-actions { margin-top: 20px; display: flex; gap: 10px; }
 
 
