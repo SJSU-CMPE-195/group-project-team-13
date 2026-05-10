@@ -11,7 +11,7 @@ def seed_data():         #for prototype, add some sample data to the database
     The guard at the top means this only runs once — if you restart the server
     the data won't get doubled up.
     """
-    if Users.query.first(): #check if there are already users in the database, if so skip seeding to avoid duplicates
+    if Users.query.filter_by(email="test@gmail.com").first(): #check if there are already users in the database, if so skip seeding to avoid duplicates
         print("Database already seeded!")
         return
 

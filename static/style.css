@@ -512,11 +512,11 @@ h2 {
 }
 
 .status.open {
-    color: #f59e0b;
+    color: #7ad095;
 }
 
 .status.resolved {
-    color: #16a34a;
+    color: #edf374;
 }
 
 .status.in_progress {
