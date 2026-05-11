@@ -102,6 +102,8 @@ class Alerts(db.Model):
     score = db.Column(db.Float, nullable = False)  # Severity or anomaly score.
     is_anomaly = db.Column(db.Boolean, nullable = False, default=False)  # True when the alert is anomalous.
     description = db.Column(db.String(200), nullable = False)
+    resolved_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = True)  # user who resolved the alert
+    resolved_at = db.Column(db.DateTime, nullable = True)  # timestamp when the alert was resolved
 
     # Window-level detection fields.
     detection_type = db.Column(db.String(20), nullable = True)  # RULE, AI, or HYBRID.
@@ -113,3 +115,4 @@ class Alerts(db.Model):
     # Link Alert back to Flows
     flow_alert = db.relationship('Flows', foreign_keys = [flow_id], backref='alerts')
     # A user relationship can be added later if alerts need ownership.
+    resolver = db.relationship('Users', foreign_keys = [resolved_by], backref='resolved_alerts')

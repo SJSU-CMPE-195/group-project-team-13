@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 from user.models import Users, Devices, Metadata, Alerts
 from db import db
+from datetime import datetime
 import subprocess
 import os
 from pathlib import Path
@@ -130,7 +131,7 @@ def alert_detail(alert_id):
         flash("Alert not found", "error")
         return redirect(url_for('user_bp.alerts'))
     
-    return render_template('alert_detail.html', alert = alert,)
+    return render_template('alert_detail.html', alert = alert)
 
 '''
 @user_bp.route('/add_alert', methods=['POST'])
@@ -148,11 +149,11 @@ def resolve_alert(alert_id):
     if not session.get('logged_in'):
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
-    
+    '''
     if session.get('role') != 'ADMIN':     #only admin can resolve alerts
         flash("Admin access required to resolve alerts", "error")
         return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
-
+'''
     alert = Alerts.query.get(alert_id)       #fetch alert by ID
     if not alert:
         flash("Alert not found", "error")
@@ -163,6 +164,8 @@ def resolve_alert(alert_id):
         return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
 
     alert.status = "RESOLVED"     #update alert status to resolved
+    alert.resolved_by = session.get('user_id')     #set the user who resolved the alert
+    alert.resolved_at = datetime.utcnow()   
     db.session.commit()        #save changes to database
     flash("Alert marked as resolved", "success")
     return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))

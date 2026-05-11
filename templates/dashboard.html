@@ -121,7 +121,7 @@
           <div class="alert-card-title">
             <strong>{{ alert.alert_name or 'Unknown Alert' }}</strong>
             <span class="alert-card-time">
-              {{ alert.timestamp.strftime('%b %d at %I:%M %p') if alert.timestamp else '' }}
+              {{ alert.resolved_at.strftime('%b %d at %I:%M %p') if alert.resolved_at else 'N/A' }}
             </span>
           </div>
         </div>
