@@ -23,7 +23,7 @@
 
   <!-- Alert severity banner. -->
   {% set severity_class = {
-    'High': 'status-danger',
+    'HIGH': 'status-danger',
     'MEDIUM': 'status-warning',
     'LOW': 'status-info'
   } %}
@@ -113,7 +113,7 @@
 
   </div>
 
-  <div class="detail-actions">
+  <div class="profile-actions">
     <button type="button" class="back-btn" onclick="window.history.back()">Back</button>
     {% if alert.status != 'RESOLVED' %}
     <form method="POST" action="{{ url_for('user_bp.resolve_alert', alert_id=alert.alert_id) }}">

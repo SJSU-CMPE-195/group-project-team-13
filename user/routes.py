@@ -148,6 +148,10 @@ def resolve_alert(alert_id):
     if not session.get('logged_in'):
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
+    
+    if session.get('role') != 'ADMIN':     #only admin can resolve alerts
+        flash("Admin access required to resolve alerts", "error")
+        return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
 
     alert = Alerts.query.get(alert_id)       #fetch alert by ID
     if not alert:

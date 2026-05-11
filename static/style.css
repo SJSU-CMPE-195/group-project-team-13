@@ -631,7 +631,6 @@ h2 {
 .detail-banner { margin-bottom: 25px; }
 .status-warning { background: linear-gradient(135deg, #eea125, #e67e22); }
 .status-info { background: linear-gradient(135deg, #519fd3, #2980b9); }
-.detail-actions { margin-top: 20px; display: flex; gap: 10px; }
 
 
 
