@@ -4,24 +4,27 @@
 
 <div class="profile">
   <h1>Profile</h1>  
+  <h2 class="hi-text">Heyy, {{ user.name }}!</h2>
   <div>
     <p class="title">ID</p>
-    <p class="subtitle">{{user.user_id}}</p>
+    <p class="subtitle">{{ user.user_id }}</p>
   </div>
   <div>
     <p class="title">Email/Username</p>
-    <p class="subtitle">{{user.email}}</p>
+    <p class="subtitle">{{ user.email }}</p>
   </div>
   <div>
     <p class="title">Name</p>
-    <p class="subtitle">{{user.name}}</p>
+    <p class="subtitle">{{ user.name }}</p>
   </div>
   <div>
     <p class="title">Role</p>
-    <p class="subtitle">{{user.role}}</p>
+    <p class="subtitle">{{ user.role }}</p>
   </div>
-  <button class="back-btn" onclick="window.history.back()"> Back
-
- 
+  <button class="back-btn" onclick="window.history.back()"> Back</button>
+  
+  <a href="{{ url_for('user_bp.edit_profile') }}" class="edit-btn">
+    Edit Profile
+  </a>
 </div>
 {% endblock %}

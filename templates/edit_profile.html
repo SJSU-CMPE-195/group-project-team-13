@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Edit Profile | LANGUARD{% endblock %}
+{% block content %}
+<div class="profile">
+    <h1>Edit Profile</h1>
+    <h2 class="hi-text">Update your account information</h2>
+    
+    <form method="POST">
+        <div>
+            <p class="title">Email</p>
+            <input class="subtitle" type="email" value="{{ user.email }}" disabled>
+        </div>
+
+        <div>
+            <p class="title">Current Name</p>
+            <input class="subtitle" type="text" value="{{ user.name }}" disabled>
+        </div>
+
+        <div>
+            <p class="title">New Name</p>
+            <input class="subtitle" type="text" value="{{ user.name }}" required>
+        </div>
+    </form>
+    
+
+    
+    <div class="profile-actions">
+        <button type="button" class="back-btn" onclick="window.history.back()">
+          Cancel
+        </button>
+
+        <button type="submit" class="edit-btn">
+          Save Changes
+        </button>
+    </div>
+</div>
+{% endblock %}

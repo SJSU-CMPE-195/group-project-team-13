@@ -132,7 +132,7 @@ def alert_detail(alert_id):
     
     return render_template('alert_detail.html', alert = alert,)
 
-
+'''
 @user_bp.route('/add_alert', methods=['POST'])
 def add_alert():
     if not session.get('logged_in'):
@@ -140,8 +140,7 @@ def add_alert():
         return redirect(url_for('user_bp.login'))
     
     packet_id = request.form['packet_id']
-
-
+'''
 
 
 @user_bp.route('/alerts/<int:alert_id>/resolve', methods=['POST'])
@@ -203,3 +202,25 @@ def run_detection():
     except Exception as e:
         print(f"[Flask] Error: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@user_bp.route('/profile/edit', methods=['GET', 'POST'])
+def edit_profile():
+    if not session.get('logged_in'):
+        flash("Must log in to access this page", "error")
+        return redirect(url_for('user_bp.login'))
+    
+    user = Users.query.get(session.get('user_id'))     #fetch current user from database
+    if request.method == 'POST':
+        new_name = request.form['name']     #get updated name
+        if not new_name:            #validate new name
+            flash("Name cannot be empty", "error")
+            return redirect(url_for('user_bp.edit_profile'))
+        
+        user.name = new_name        #update user name
+        db.session.commit()        
+
+        session['name'] = new_name     #update name in session
+        flash("Profile updated successfully", "success")
+        return redirect(url_for('user_bp.profile'))
+    
+    return render_template('edit_profile.html', user = user)

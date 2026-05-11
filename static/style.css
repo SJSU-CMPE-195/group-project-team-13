@@ -216,6 +216,8 @@ h2 {
   
 .profile h1 {
     text-align: center;
+    margin-bottom: 30px;
+    color: #0b5c57;
 }
   
 .profile .goback {
@@ -230,8 +232,14 @@ h2 {
 }
   
 .profile .title {
-    font-weight: bold;
-    color: #333;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.profile .hi-text {
+    font-size: 1.2em;
+    color: #75abab;
     margin-bottom: 5px;
 }
   
@@ -250,6 +258,20 @@ h2 {
     border-radius: 6px;
     overflow-x: auto;
     font-size: 0.9em;
+}
+
+.profile .edit-btn {
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(90deg, #00c896, #00e0ff);
+    color: white;
+}
+
+.profile .edit-btn:hover {
+    box-shadow: 0 0 14px rgba(0,224,255,0.25);
 }
 
 
@@ -302,7 +324,7 @@ h2 {
 .dashboard {
     max-width: 1100px;
     margin: 40px auto;
-    padding: 20px;
+    padding: 5px;
 }
 
 .dashboard-header {
@@ -453,6 +475,7 @@ h2 {
 .alerts-container {
     max-width: 1000px;
     margin: 40px auto;
+    color: #0b5c57;
 }
 
 .alerts-table {
