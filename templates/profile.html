@@ -21,10 +21,18 @@
     <p class="title">Role</p>
     <p class="subtitle">{{ user.role }}</p>
   </div>
-  <button class="back-btn" onclick="window.history.back()"> Back</button>
-  
-  <a href="{{ url_for('user_bp.edit_profile') }}" class="edit-btn">
-    Edit Profile
-  </a>
+
+  <div class="profile-actions">
+    <button class="back-btn" onclick="window.history.back()"> Back</button>
+    <div class="right-actions">
+      <a href="{{ url_for('user_bp.edit_profile') }}" class="edit-btn">
+        Edit Profile
+      </a>
+      <a href="{{ url_for('user_bp.change_password') }}" class="change-pw-btn">
+        Change Password
+      </a>
+    </div>
+  </div>
+
 </div>
 {% endblock %}

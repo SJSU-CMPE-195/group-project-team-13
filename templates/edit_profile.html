@@ -3,7 +3,7 @@
 {% block content %}
 <div class="profile">
     <h1>Edit Profile</h1>
-    <h2 class="hi-text">Update your account information</h2>
+    <h2 class="hi-text">Update Your Account Information</h2>
     
     <form method="POST">
         <div>
@@ -18,20 +18,18 @@
 
         <div>
             <p class="title">New Name</p>
-            <input class="subtitle" type="text" value="{{ user.name }}" required>
+            <input class="subtitle" type="text" name="name" value="{{ user.name }}" required>
+        </div>
+
+        <div class="profile-actions">
+            <button type="button" class="back-btn" onclick="window.history.back()">
+              Cancel
+            </button>
+    
+            <button type="submit" class="edit-btn">
+              Save Changes
+            </button>
         </div>
     </form>
-    
-
-    
-    <div class="profile-actions">
-        <button type="button" class="back-btn" onclick="window.history.back()">
-          Cancel
-        </button>
-
-        <button type="submit" class="edit-btn">
-          Save Changes
-        </button>
-    </div>
 </div>
 {% endblock %}

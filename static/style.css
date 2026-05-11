@@ -204,7 +204,7 @@ h2 {
 }
 
 
-/* Profile page. */
+/* Profile page & Edit page */
 .profile {
     max-width: 700px;
     margin: 40px auto;
@@ -273,6 +273,33 @@ h2 {
 .profile .edit-btn:hover {
     box-shadow: 0 0 14px rgba(0,224,255,0.25);
 }
+
+.profile-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.profile .change-pw-btn {
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(90deg, #00e0ff, #bf8de1) ;
+    color: white;
+}
+
+.profile .change-pw-btn:hover {
+    box-shadow: 0 0 14px rgba(0,224,255,0.25);
+}
+
+.right-actions {
+    display: flex;
+    gap: 12px;
+}
+
 
 
 /* User table styles. */

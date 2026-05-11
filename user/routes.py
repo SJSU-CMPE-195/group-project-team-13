@@ -216,6 +216,10 @@ def edit_profile():
             flash("Name cannot be empty", "error")
             return redirect(url_for('user_bp.edit_profile'))
         
+        if new_name == user.name:     #check if new name is different from current name
+            flash("New name must be different from current name", "error")
+            return redirect(url_for('user_bp.edit_profile'))
+        
         user.name = new_name        #update user name
         db.session.commit()        
 
@@ -224,3 +228,38 @@ def edit_profile():
         return redirect(url_for('user_bp.profile'))
     
     return render_template('edit_profile.html', user = user)
+
+@user_bp.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if not session.get('logged_in'):
+        flash("Must log in to access this page", "error")
+        return redirect(url_for('user_bp.login'))
+    
+    user = Users.query.get(session.get('user_id'))     #fetch current user from database
+    if request.method == 'POST':
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        if not user.verify_password(current_password):       #verify current password
+            flash("Current password is incorrect", "error")
+            return redirect(url_for('user_bp.change_password'))
+        
+        if new_password == current_password:     #check if new password is different from current password
+            flash("New password must be different from current password", "error")
+            return redirect(url_for('user_bp.change_password'))
+        
+        if len(new_password) < 5:   #validate new password length
+            flash("Password must be at least 5 characters long", "error")
+            return redirect(url_for('user_bp.change_password'))
+        
+        if new_password != confirm_password:
+            flash("Password does not match", "error")
+            return redirect(url_for('user_bp.change_password'))
+        
+        user.set_password(new_password)     #hash and set new password
+        db.session.commit()        
+
+        flash("Password changed successfully", "success")
+        return redirect(url_for('user_bp.profile'))
+    
+    return render_template('change_password.html')
