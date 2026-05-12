@@ -20,11 +20,22 @@ with app.app_context():
         print("Resetting database...")
         db.drop_all()      #drop all tables if reset flag is provided
         db.create_all()
-        seed_data()    #seed the database with sample data for prototype
     else:
         db.create_all()
-        seed_data()
     
+    #create admin user at the start
+    admin_email = os.getenv("ADMIN_EMAIL")   #get admin email from .env
+    admin_password = os.getenv("ADMIN_PASSWORD")   
+
+    admin = Users.query.filter_by(email=admin_email).first()   #check if admin user already exists
+    if not admin:
+        admin_acc = Users(email=admin_email, name="Admin", role="ADMIN", allowed_resolve_alerts=True)  
+        admin_acc.set_password(admin_password)
+        db.session.add(admin_acc)     
+        db.session.commit()  
+        print('Created admin account')   
+
+    seed_data()    #seed the database with sample data for prototype
     print('Created database!')
 
 #define routes for different pages

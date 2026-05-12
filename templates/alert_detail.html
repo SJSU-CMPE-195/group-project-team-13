@@ -37,6 +37,17 @@
 
   <div class="detail-box">
 
+    {% if alert.status == 'RESOLVED' %}
+    <div class="detail-item">
+      <span class="label">Resolved Time:</span>
+      <span>{{ alert.resolved_at.strftime('%B %d, %Y at %I:%M %p') if alert.resolved_at else 'N/A' }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Resolved By:</span>
+      <span>{{ alert.resolver.name if alert.resolver else 'N/A' }}</span>
+    </div>
+    {% endif %}
+
     <div class="detail-item">
       <span class="label">Severity:</span>
       <span class="severity {{ alert.severity | lower }}">{{ alert.severity }}</span>
@@ -109,16 +120,6 @@
       <span class="label">Duration:</span>
       <span>{{ alert.flow_alert.start_time }} to {{ alert.flow_alert.end_time }}</span>
     </div>
-    {% endif %}
-
-    {% if alert.status == 'RESOLVED' %}
-    <div class="detail-item">
-      <span class="label">Resolved Time:</span>
-      <span>{{ alert.resolved_at.strftime('%B %d, %Y at %I:%M %p') if alert.resolved_at else 'N/A' }}</span>
-    </div>
-    <div class="detail-item">
-      <span class="label">Resolved By:</span>
-      <span>{{ alert.resolver.name if alert.resolver else 'N/A' }}</span>
     {% endif %}
 
   </div>
