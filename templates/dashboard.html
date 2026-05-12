@@ -72,11 +72,11 @@
     </div>
   </section>
 
-  <!-- Recent alerts. -->
+  <!-- Active alerts. -->
   <section class="dashboard-section">
-    <h3>Recent Alerts</h3>
+    <h3>Active Alerts</h3>
 
-    {% if alerts %}
+    {% if alert_count > 0 %}
     <div class="alert-cards">
       {% for alert in alerts %}
       {% if alert.status != 'RESOLVED' %}
@@ -96,8 +96,6 @@
           <button type="submit" class="btn-dismiss">Mark as Resolved</button>
         </form>
       </div>
-      {%else%}
-      <p>No active security events detected.</p>
       {% endif %}
       {% endfor %}
     </div>

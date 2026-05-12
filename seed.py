@@ -68,7 +68,13 @@ def seed_data():         #for prototype, add some sample data to the database
         score=0.95, is_anomaly=True,
         description="Suspicious flow detected between Laptop1 and Laptop2"
     )
-    db.session.add(alert)
+    alert2 = Alerts(
+        flow_id=flow.flow_id,
+        severity="MEDIUM", status="OPEN",
+        score=0.79, is_anomaly=True,
+        description="Unusual traffic volume detected from Laptop1"
+    )
+    db.session.add_all([alert, alert2])
     db.session.commit()
 
     print("Database seeding completed!")

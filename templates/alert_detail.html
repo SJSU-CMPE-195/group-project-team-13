@@ -55,7 +55,7 @@
 
     <div class="detail-item">
       <span class="label">Status:</span>
-      <span>{{ alert.status }}</span>
+      <span class="status {{ alert.status | lower }}">{{ alert.status }}</span>
     </div>
 
     <div class="detail-item">

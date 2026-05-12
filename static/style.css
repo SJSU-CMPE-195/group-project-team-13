@@ -438,7 +438,7 @@ h2 {
     border-left: 6px solid #ccc;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-.alert-card-high { border-left-color: #e74c3c; background: #fff8f8; }
+.alert-card-high { border-left-color: #e74c3c; background: #f8eaea; }
 .alert-card-medium { border-left-color: #f39c12; background: #fffdf0; }
 .alert-card-low { border-left-color: #3498db; background: #f0f8ff; }
 
@@ -571,11 +571,12 @@ h2 {
 }
 
 .status.resolved {
-    color: #f4ff23;
+    color: #5392f8;
+    font-weight: bold;
 }
 
 .status.in_progress {
-    color: #3b82f6;
+    color: #f4ff23;
 }
 
 
