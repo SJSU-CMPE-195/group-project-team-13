@@ -15,10 +15,11 @@
       </h1>
       <ul class="nav-links">
         {% if session.get('logged_in') %}
-          <!-- Links that depend on the signed-in role. -->
-          {% if session.get('role') == 'USER' %}
           <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.dashboard') }}">Dashboard</a></li>
           <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.alerts') }}">Alerts Table</a></li>
+          <!-- Links that depend on the signed-in role. -->
+          {% if session.get('role') == 'ADMIN' %}
+          <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.manage_users') }}">Manage Users</a></li>
           {% endif %}
           <!-- Links shown to every signed-in user. -->
           <li style="margin: 10px 0;"><a href="{{ url_for('user_bp.profile') }}">Profile</a></li>

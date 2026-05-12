@@ -87,7 +87,7 @@ def profile():
                 'email': session.get('email'),'role': session.get('role')
     }
     print(f"Load profile for user: {user_info['email']}, role: {user_info['role']}")
-    return render_template('profile.html', user = user_info)
+    return render_template('profile.html', user=user_info)
 
 
 @user_bp.route('/dashboard')
@@ -117,7 +117,7 @@ def alerts():
     
     # Pull alerts from the database, newest first.
     alerts = Alerts.query.order_by(Alerts.timestamp.desc()).all()
-    return render_template('alert_page.html', alerts = alerts)
+    return render_template('alert_page.html', alerts=alerts)
 
 
 @user_bp.route('/alerts/<int:alert_id>')
@@ -131,7 +131,7 @@ def alert_detail(alert_id):
         flash("Alert not found", "error")
         return redirect(url_for('user_bp.alerts'))
     
-    return render_template('alert_detail.html', alert = alert)
+    return render_template('alert_detail.html', alert=alert)
 
 '''
 @user_bp.route('/add_alert', methods=['POST'])
@@ -149,11 +149,11 @@ def resolve_alert(alert_id):
     if not session.get('logged_in'):
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
-    '''
+    
     if session.get('role') != 'ADMIN':     #only admin can resolve alerts
         flash("Admin access required to resolve alerts", "error")
         return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
-'''
+
     alert = Alerts.query.get(alert_id)       #fetch alert by ID
     if not alert:
         flash("Alert not found", "error")
@@ -161,14 +161,14 @@ def resolve_alert(alert_id):
 
     if alert.status == "RESOLVED":
         flash("Alert is already resolved", "info")
-        return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
+        return redirect(url_for('user_bp.alert_detail', alert_id=alert_id))
 
     alert.status = "RESOLVED"     #update alert status to resolved
     alert.resolved_by = session.get('user_id')     #set the user who resolved the alert
     alert.resolved_at = datetime.utcnow()   
     db.session.commit()        #save changes to database
     flash("Alert marked as resolved", "success")
-    return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
+    return redirect(url_for('user_bp.alert_detail', alert_id=alert_id))
 
 
 @user_bp.route('/run_detection', methods=['POST'])
@@ -234,7 +234,7 @@ def edit_profile():
         flash("Profile updated successfully", "success")
         return redirect(url_for('user_bp.profile'))
     
-    return render_template('edit_profile.html', user = user)
+    return render_template('edit_profile.html', user=user)
 
 @user_bp.route('/change_password', methods=['GET', 'POST'])
 def change_password():
@@ -270,3 +270,16 @@ def change_password():
         return redirect(url_for('user_bp.profile'))
     
     return render_template('change_password.html')
+
+@user_bp.route('/admin/manage_users')
+def manage_users():
+    if not session.get('logged_in'):
+        flash("Must log in to access this page", "error")
+        return redirect(url_for('user_bp.login'))
+    
+    if session.get('role') != 'ADMIN':
+        flash("Unauthorized access: ADMIN only", "error")
+        return redirect(url_for('user_bp.dashboard'))
+    
+    users = Users.query.all()     #fetch all users from database
+    return render_template('manage_users.html', users=users)

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Manage Users | LANGUARD{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+    <h1>User Management</h1>
+    <p>Admin can update roles here</p>
+</div>
+
+<table class="user-table">
+    <thread>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Resolve ALert</th>
+            <th>Action</th>
+        </tr>
+    </thread>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            
+        </tr>
+        {% endfor %}
+</table>
+
+
+{% endblock %}
