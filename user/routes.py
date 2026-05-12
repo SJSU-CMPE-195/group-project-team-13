@@ -30,7 +30,6 @@ def login():
         session['name'] = user.name
         session['email'] = user.email
         session['role'] = user.role
-        session['allowed_resolve_alerts'] = user.allowed_resolve_alerts
         
         print(f"Login successful: {email}, role: {user.role}")   #see console output
         #if user['role'] == 'ADMIN':
@@ -154,9 +153,10 @@ def resolve_alert(alert_id):
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
     
-    if session.get('role') != 'ADMIN':     #only admin can resolve alerts
+    user = Users.query.get(session.get('user_id'))     #fetch current user 
+    if session.get('role') != 'ADMIN' and not user.allowed_resolve_alerts:     #only admin can resolve alerts
         flash("Admin access required to resolve alerts", "error")
-        return redirect(url_for('user_bp.alert_detail', alert_id = alert_id))
+        return redirect(url_for('user_bp.alert_detail', alert_id=alert_id))
 
     alert = Alerts.query.get(alert_id)       #fetch alert by ID
     if not alert:
@@ -214,6 +214,7 @@ def run_detection():
         print(f"[Flask] Error: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+
 @user_bp.route('/profile/edit', methods=['GET', 'POST'])
 def edit_profile():
     if not session.get('logged_in'):
@@ -239,6 +240,7 @@ def edit_profile():
         return redirect(url_for('user_bp.profile'))
     
     return render_template('edit_profile.html', user=user)
+
 
 @user_bp.route('/change_password', methods=['GET', 'POST'])
 def change_password():
@@ -275,6 +277,7 @@ def change_password():
     
     return render_template('change_password.html')
 
+
 @user_bp.route('/admin/manage_users')
 def manage_users():
     if not session.get('logged_in'):
@@ -285,8 +288,9 @@ def manage_users():
         flash("Unauthorized access: ADMIN only", "error")
         return redirect(url_for('user_bp.dashboard'))
     
-    users = Users.query.all()     #fetch all users from database
+    users = Users.query.filter(Users.role != 'ADMIN').all()     #fetch all users from database
     return render_template('manage_users.html', users=users)
+
 
 @user_bp.route('/admin/grant_permission/<int:user_id>', methods=['POST'])
 def grant_permission(user_id):
