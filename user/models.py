@@ -13,6 +13,7 @@ class Users(db.Model):   #define User model inheriting from db.Model
     hashed_password = db.Column(db.String(300), nullable = False)
     name = db.Column(db.String(100), nullable = False)
     role = db.Column(db.String(20), nullable = False, default = "USER")  # ADMIN or USER.
+    allowed_resolve_alerts = db.Column(db.Boolean, nullable = False, default=False)  #permission to resolve alerts
 
     #hash and set the password
     def set_password(self, password):     

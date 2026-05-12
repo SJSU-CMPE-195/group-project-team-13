@@ -30,6 +30,7 @@ def login():
         session['name'] = user.name
         session['email'] = user.email
         session['role'] = user.role
+        session['allowed_resolve_alerts'] = user.allowed_resolve_alerts
         
         print(f"Login successful: {email}, role: {user.role}")   #see console output
         #if user['role'] == 'ADMIN':
@@ -62,6 +63,9 @@ def register():
         new_user = Users(email=email, name=name)
         new_user.set_password(password)     #hash and set the password
         new_user.assign_admin()     #check if email matches admin email
+        if new_user.role == "ADMIN":
+            new_user.allowed_resolve_alerts = True
+
         db.session.add(new_user)       #add user to database
         db.session.commit()        #commit changes to database
         flash("Registration successful! Log in now", "success")
@@ -283,3 +287,24 @@ def manage_users():
     
     users = Users.query.all()     #fetch all users from database
     return render_template('manage_users.html', users=users)
+
+@user_bp.route('/admin/grant_permission/<int:user_id>', methods=['POST'])
+def grant_permission(user_id):
+    if not session.get('logged_in'):
+        flash("Must log in to access this page", "error")
+        return redirect(url_for('user_bp.login'))
+    
+    if session.get('role') != 'ADMIN':
+        flash("Unauthorized access: ADMIN only", "error")
+        return redirect(url_for('user_bp.dashboard'))
+    
+    user = Users.query.get(user_id)     #fetch user by ID
+    if not user:
+        flash("User not found", "error")
+        return redirect(url_for('user_bp.manage_users'))
+    
+    user.allowed_resolve_alerts = not user.allowed_resolve_alerts     #toggle permission
+    db.session.commit()        
+
+    flash(f"Updates permission to {user.email}", "success")
+    return redirect(url_for('user_bp.manage_users'))

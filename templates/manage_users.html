@@ -24,8 +24,23 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
-            
+            <td>
+                {% if user.allowed_resolve_alerts %}
+                  <span class="status open">YES</span>
+                {% else %}
+                  <span class="status resolved">NO</span>
+                {% endif %}
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('user_bp.grant_permission', user_id=user.user_id) }}">
+                    <button class="view-btn" type="submit">
+                        Toggle
+                    </button>
+                </form>
+            </td>
+
         </tr>
+
         {% endfor %}
 </table>
 

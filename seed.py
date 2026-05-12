@@ -21,6 +21,7 @@ def seed_data():         #for prototype, add some sample data to the database
     # The password is intentionally simple because this is just prototype data.
     user = Users(email="test@gmail.com", name="Test", role="USER")
     user.set_password("password_000")       #set password for the user
+    user.allowed_resolve_alerts = True  #give the user permission to resolve alerts
     db.session.add(user)       #add user to database
     db.session.commit()        #save the use
 
