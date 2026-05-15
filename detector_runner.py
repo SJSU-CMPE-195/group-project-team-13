@@ -24,7 +24,7 @@ def run_detection_pipeline(db, app_context=None, features_csv_path="features.csv
     from user.models import Alerts
     from datetime import datetime
 
-    print("[LANGuard Flask] Starting detection pipeline...")
+    # print("[LANGuard Flask] Starting detection pipeline...")
 
     # There is nothing to analyze until feature extraction has produced data.
     if not Path(features_csv_path).exists():
@@ -42,7 +42,7 @@ def run_detection_pipeline(db, app_context=None, features_csv_path="features.csv
         return False
 
     # Run the rule-based detector first.
-    print("[LANGuard Flask] Running rule-based detection...")
+    # print("[LANGuard Flask] Running rule-based detection...")
 
     # Clear stale rule output so we do not duplicate alerts from an earlier run.
     if Path("rule_results.csv").exists():
@@ -75,11 +75,13 @@ def run_detection_pipeline(db, app_context=None, features_csv_path="features.csv
             print(f"[LANGuard Flask] Error reading rule results: {e}")
 
     # Run the AI detector next.
-    print("[LANGuard Flask] Running AI-based detection...")
+    #print("[LANGuard Flask] Running AI-based detection...")
+
     ai_alerts = []
     try:
         # Load the trained model and the feature list it expects.
-        model = joblib.load("isolation_forest_model.pkl")
+        MODEL_DIR = Path("Model_Pipeline")
+        model = joblib.load(MODEL_DIR / "isolation_forest_model.joblib") # isolation_forest_model.pkl; isolation_forest_model.joblib
         with open("model_features.json") as f:
             feature_cols = json.load(f)
 

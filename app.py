@@ -6,8 +6,9 @@ from seed import seed_data   #import seed function to add sample data to the dat
 from dotenv import load_dotenv      #load environment variables from .env file
 import os           #access environment variables
 import sys
+from scheduler import start_scheduler  # import the scheduler start function
 
-load_dotenv()   
+load_dotenv("env.env")   #load environment variables from the .env file 
 app = Flask(__name__)   #create a flask app instance
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE")       #configure the database URI  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False    #track modifications setting
@@ -37,6 +38,9 @@ with app.app_context():
 
     seed_data()    #seed the database with sample data for prototype
     print('Created database!')
+
+# starts the scheduler to run the pipelines
+start_scheduler(app)
 
 #define routes for different pages
 @app.route('/')

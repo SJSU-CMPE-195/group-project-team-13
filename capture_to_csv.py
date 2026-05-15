@@ -7,7 +7,8 @@ OUTPUT_FILE = "packets.csv"
 
 # Set this to the network interface on your LAN.
 # On a Pi it is often eth0 or wlan0.
-INTERFACE = "eth0"
+# on my desktop use :r"\Device\NPF_{5DE213B0-CF72-4B6D-BAC8-6ADE437EFD1F}"
+INTERFACE = r"\Device\NPF_{5DE213B0-CF72-4B6D-BAC8-6ADE437EFD1F}"
 
 # Column order for the CSV. Keep this in sync with process_packet.
 header = [
