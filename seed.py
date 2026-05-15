@@ -1,4 +1,4 @@
-from db import db
+'''from db import db
 from user.models import Users, Devices, Flows, Metadata, Alerts
 
 
@@ -78,3 +78,4 @@ def seed_data():         #for prototype, add some sample data to the database
     db.session.commit()
 
     print("Database seeding completed!")
+'''

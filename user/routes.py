@@ -99,18 +99,34 @@ def dashboard():
         flash("Must log in to access this page", "error")
         return redirect(url_for('user_bp.login'))
 
-    recent_alerts = Alerts.query.order_by(Alerts.timestamp.desc()).limit(10).all()
-    threats_blocked = Alerts.query.filter_by(status='RESOLVED').count()      #count number of resolved alerts
-    alert_count = Alerts.query.filter_by(status='OPEN').count()     #total number of alerts
-    packet_count = Metadata.query.count()        #total number of packets from database
-    total_alerts = Alerts.query.count()      #total number of alerts
-    high_alerts = Alerts.query.filter(Alerts.severity.ilike('High')).count()       #count high severity alerts
-    resolve_alerts = Alerts.query.filter_by(status='RESOLVED').order_by(Alerts.timestamp.desc()).limit(5).all()     #recent resolved alerts 
+    active_alerts = Alerts.query.filter(Alerts.status != 'RESOLVED') \
+        .order_by(Alerts.timestamp.desc()) \
+        .limit(25) \
+        .all()
 
-    return render_template('dashboard.html', alerts=recent_alerts, packet_count=packet_count,
-                           alert_count=alert_count, threats_blocked=threats_blocked,
-                           total_alerts=total_alerts, high_alerts=high_alerts, resolve_alerts=resolve_alerts)
+    resolve_alerts = Alerts.query.filter_by(status='RESOLVED') \
+        .order_by(Alerts.resolved_at.desc()) \
+        .limit(5) \
+        .all()
 
+    threats_blocked = Alerts.query.filter_by(status='RESOLVED').count()
+    alert_count = Alerts.query.filter(Alerts.status != 'RESOLVED').count()
+    packet_count = Metadata.query.count()
+
+    high_alerts = Alerts.query.filter(
+        Alerts.status != 'RESOLVED',
+        Alerts.severity.ilike('HIGH')
+    ).count()
+
+    return render_template(
+        'dashboard.html',
+        alerts=active_alerts,
+        packet_count=packet_count,
+        alert_count=alert_count,
+        threats_blocked=threats_blocked,
+        high_alerts=high_alerts,
+        resolve_alerts=resolve_alerts
+    )
 
 @user_bp.route('/alerts')
 def alerts():

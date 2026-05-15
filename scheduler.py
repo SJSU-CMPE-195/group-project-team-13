@@ -31,7 +31,7 @@ def run_detection_task():
 
         # Step 1: turn raw packet rows into feature windows.
         result = subprocess.run(
-            ['python3', 'Model_Pipeline/extract_features.py'],
+            ['python', 'Model_Pipeline/extract_features.py'], # python for windows, python3 for linux
             capture_output=True,
             text=True,
             timeout=30  # If this takes longer than 30 seconds, something is off.

@@ -10,7 +10,7 @@ import json
 import sys
 
 INPUT_FILE = "features.csv"
-MODEL_FILE = "isolation_forest_model.pkl"
+MODEL_FILE = "isolation_forest_model.joblib"
 FEATURES_META_FILE = "model_features.json"
 OUTPUT_FILE = "ai_results.csv"
 
